@@ -1,0 +1,163 @@
+/* ESTILO DEL LOGIN DEL ADMINISTRADOR (COMPUTADORA)*/
+*{
+    margin: 0px;
+    padding: 0px;
+}
+#main-login{
+    display: flex;
+    color: white;
+    background-color: rgb(0, 0, 0);
+    max-height: 700px;
+}
+#video-login{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit:fill;
+}
+#div-login{
+    max-width: 50%;
+}
+#div-logo{
+    margin-top:30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#login-text{
+    margin-left: 40%;
+}
+#img-logo{
+    height: 20%;
+    width: 20%;
+    border-radius: 50%;
+}
+form{
+    margin-top: 80px;
+}
+form label {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 50px;
+
+    font-weight: bold;
+}
+form input {
+    z-index: 100;
+    max-width: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-right: 30px;
+    margin-left: 50px;
+}
+#iniciar-login{
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#btn-login{
+    color: white;
+    font-weight: bold;
+    background-color: rgb(156, 43, 9);
+    padding: 15px;
+    width: 300px;
+    border: none;
+    border-radius: 10px;
+}
+/* ESTILO DEL LOGIN DEL ADMINISTRADOR (CELULAR)*/
+@media (max-width: 730px) {
+  #main-login {
+    flex-direction: column;
+    max-height: none;
+    min-height: 100vh;
+  }
+  #video-login {
+    display: none;
+  }
+  #div-login {
+    max-width: 100%;
+  }
+  #div-logo {
+    flex-direction: column;
+  }
+  #img-logo{
+    min-height: 150px;
+    min-width: 150px;
+  }
+  #login-text {
+    margin-left: 0;
+    text-align: center;
+  }
+  form label,
+  form input {
+    margin-left: 10px;
+    display: block;
+    max-width: 90%;
+  }
+  #btn-login {
+    width: 80%;
+  }
+}
+
+/* ESTILO DEL HOME DEL CLIENTE (COMPUTADORA)*/
+#body-home-cliente {
+    background-color: #0f0f0f;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+#barra-menu {
+    background-color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+#icon-text{
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+
+}
+#logo-menu {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+}
+#div-btnes-home{
+    padding: 20px;
+    display: flex;
+}
+#btn-carrito {
+    background-color: #456403;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.15s ease-in;
+}
+#btn-carrito:hover{
+    box-shadow:  1px 0 20px #adfd00;
+}
+#btn-home{
+    background-color: #1a073d;
+    color: white;
+    border: none;
+    padding: 20px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 20px;
+    transition: 0.15s ease-in-out;
+}
+#btn-home:hover{
+    box-shadow:  1px 0 20px #5900ff;
+}
+#main-home-cliente h2 {
+    text-align: center;
+    margin: 20px;
+}
