@@ -1,0 +1,167 @@
+[
+  {
+    "id": 1,
+    "titulo": "Uncharted 4: A Thief’s End",
+    "genero": ["Acción-aventura"],
+    "añoDeSalida": 2016,
+    "precio": 6499,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "uncharted4.jpg",
+    "descripcion": "La última aventura de Nathan Drake, llena de tesoros y persecuciones."
+  },
+  {
+    "id": 2,
+    "titulo": "The Last of Us Part II",
+    "genero": ["Acción-aventura", "Survival"],
+    "añoDeSalida": 2020,
+    "precio": 7999,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "tlou2.jpg",
+    "descripcion": "La cruda continuación de la historia de Ellie en un mundo post-pandemia."
+  },
+  {
+    "id": 3,
+    "titulo": "Call of Duty: Black Ops 6",
+    "genero": ["FPS"],
+    "añoDeSalida": 2025,
+    "precio": 8999,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "bo6.jpg",
+    "descripcion": "Nueva entrega bélica con campaña cinematográfica y multijugador frenético."
+  },
+  {
+    "id": 4,
+    "titulo": "Marvel’s Spider-Man",
+    "genero": ["Acción-aventura"],
+    "añoDeSalida": 2018,
+    "precio": 6299,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "spiderman.jpg",
+    "descripcion": "Balanceate por Nueva York como el arácnido favorito de todos."
+  },
+  {
+    "id": 5,
+    "titulo": "Gran Turismo Sport",
+    "genero": ["Carreras"],
+    "añoDeSalida": 2017,
+    "precio": 5599,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "granturismo.jpg",
+    "descripcion": "Simulación de conducción con licencias oficiales y competición online."
+  },
+  {
+    "id": 6,
+    "titulo": "Ghost of Tsushima",
+    "genero": ["Acción-aventura"],
+    "añoDeSalida": 2020,
+    "precio": 7499,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "ghost.jpg",
+    "descripcion": "Conviértete en el Fantasma y defiende Tsushima de la invasión mongola."
+  },
+  {
+    "id": 7,
+    "titulo": "God of War",
+    "genero": ["Acción-aventura"],
+    "añoDeSalida": 2018,
+    "precio": 6999,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "gow.jpg",
+    "descripcion": "Kratos y Atreus se enfrentan a los dioses nórdicos en una épica travesía."
+  },
+  {
+    "id": 8,
+    "titulo": "Sekiro: Shadows Die Twice",
+    "genero": ["Acción", "Souls-like"],
+    "añoDeSalida": 2019,
+    "precio": 6599,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "sekiro.jpg",
+    "descripcion": "Domina la katana en el Japón feudal y supera desafiantes combates."
+  },
+  {
+    "id": 9,
+    "titulo": "Injustice 2",
+    "genero": ["Lucha"],
+    "añoDeSalida": 2017,
+    "precio": 4699,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "injustice2.jpg",
+    "descripcion": "Batman, Superman y más héroes DC se enfrentan en épicas batallas."
+  },
+  {
+    "id": 10,
+    "titulo": "Mortal Kombat 11",
+    "genero": ["Lucha"],
+    "añoDeSalida": 2019,
+    "precio": 5899,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "mk11.jpg",
+    "descripcion": "Fatalities, brutalities y un plantel enorme de kombatientes icónicos."
+  },
+  {
+    "id": 11,
+    "titulo": "Dragon Ball Xenoverse 2",
+    "genero": ["Lucha", "RPG"],
+    "añoDeSalida": 2016,
+    "precio": 4999,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "xenoverse2.jpg",
+    "descripcion": "Crea tu propio guerrero y reescribe la historia de Dragon Ball."
+  },
+  {
+    "id": 12,
+    "titulo": "EA Sports UFC 2",
+    "genero": ["Deportes", "Lucha"],
+    "añoDeSalida": 2016,
+    "precio": 3999,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "ufc2.jpg",
+    "descripcion": "El octágono cobra vida con tus luchadores favoritos de la UFC."
+  },
+  {
+    "id": 13,
+    "titulo": "Jump Force",
+    "genero": ["Lucha"],
+    "añoDeSalida": 2019,
+    "precio": 4499,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "jumpforce.jpg",
+    "descripcion": "Goku, Luffy y Naruto unen fuerzas en batallas 3D espectaculares."
+  },
+  {
+    "id": 14,
+    "titulo": "Assassin’s Creed III Remastered",
+    "genero": ["Acción-aventura"],
+    "añoDeSalida": 2019,
+    "precio": 5299,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "ac3.jpg",
+    "descripcion": "Revive la Revolución Americana con gráficos mejorados y todo el DLC."
+  },
+  {
+    "id": 15,
+    "titulo": "Horizon Zero Dawn",
+    "genero": ["Acción-RPG"],
+    "añoDeSalida": 2017,
+    "precio": 6199,
+    "categoria": "PS4",
+    "activo": true,
+    "img": "horizon.jpg",
+    "descripcion": "Explora un mundo post-apocalíptico poblado por bestias mecánicas."
+  }
+]
