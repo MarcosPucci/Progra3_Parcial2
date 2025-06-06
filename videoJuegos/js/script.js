@@ -1,4 +1,11 @@
+/*===============================Etiquetas a usar del html=======================================*/
+
 const divContenedorDatos = document.getElementById("div-contenedor");
+const btnCarrito = document.getElementById("btn-carrito");
+
+/*===============================Variables a usar=======================================*/
+
+let listCarrito = [];
 
 function cargarDatos() {
   return fetch("json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
@@ -37,11 +44,11 @@ function addJuego(juego){
     btnFav.textContent = "Agregar al carrito";
     btnFav.className = "btn btn-success fw-bold rounded-pill px-4 py-2";
 
-    // btnFav.addEventListener("click", (event) =>{
-    //     event.preventDefault();
-    //     listCarrito.push(juego);
-    //     renderCarrito(listCarrito);
-    // });
+    btnFav.addEventListener("click", (event) =>{
+        event.preventDefault();
+        listCarrito.push(juego);
+        renderCarrito(listCarrito);
+    });
 
     divCard.appendChild(imgJuego);
     divCard.appendChild(tituloH3);
@@ -57,7 +64,20 @@ function renderJuegos(datosJuegos){
     datosJuegos.forEach(juego => {
         divContenedorDatos.appendChild(addJuego(juego));
     });
+};
+
+function renderCarrito(carrito){
+  mostrarCantidadEnCarrito(carrito);
 }
+
+function mostrarCantidadEnCarrito(carrito){
+  let cantidad = 0;
+
+  carrito.forEach(juego =>{
+    cantidad += 1;
+  });
+  btnCarrito.textContent = `🛒 Carrito: ${cantidad}`;
+};
 
 async function init() {
   let datos = await cargarDatos();

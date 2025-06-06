@@ -15,17 +15,31 @@
       <img src="img/logo.png" alt="Logo" id="logo-menu">
       <h1>Punto de Control</h1>
     </div>
-    <div id="div-btnes-home">
-      <button id="btn-home">🎮 Home</button>
-      <button id="btn-carrito">🛒 Carrito: 0</button>
+    <div id="div-alumnos" class="text-center mx-4">
+      <p>Alumnos: Marcos | Marcos Pucci</p>
     </div>
   </header>
 
   <main id="main-home-cliente">
-    <div id="div-catalogo">
-      <button id="btn-catalogo">Categorias</button>
-      <input type="search" name="buscar" id="input-buscar" placeholder="   Buscar...">
+    <div id="div-btnes-home">
+      <button id="btn-home">🎮 Home</button>
+      <button id="btn-carrito">🛒 Carrito: 0</button>
     </div>
+    <div class="container">
+      <div id="div-catalogo" class="row justify-content-center align-items-center g-2">
+        <div class="col-12 col-lg-8">
+          <div class="d-flex flex-column flex-lg-row gap-2">
+            <button class="flex-fill btn-categorias">Juegos de Play</button>
+            <button class="flex-fill btn-categorias">Juegos de PC</button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <input type="search" class="form-control" id="input-buscar" placeholder="Buscar...">
+        </div>
+      </div>
+    </div>
+
+
     <h2>Catálogo de Juegos</h2>
     <section id="productos">
       <div class="container">
