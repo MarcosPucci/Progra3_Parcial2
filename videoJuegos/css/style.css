@@ -169,7 +169,7 @@ form input {
 }
 
 /* ESTILO DEL HOME DEL CLIENTE (COMPUTADORA)*/
-#body-home-cliente {
+.body-pagina {
     background-color: #0f0f0f;
     color: #ffffff;
 }
@@ -237,14 +237,14 @@ form input {
     box-shadow:  0px 0 15px rgba(255, 255, 255, 0.178);
 }
 .btn-categorias{
-    background-color: #431d522d;
+    background-color: #0c0c0cf6;
     border: none;
     padding: 10px;
     border-radius: 15px;
     color: white;
 }
 .btn-categorias:hover{
-    box-shadow:  1px 0 20px #7c3a9657;
+    box-shadow:  1px 0 20px #e8e7e957;
 }
 #input-buscar{
     background-color: #565563;
@@ -256,7 +256,7 @@ form input {
     border-radius: 10px;
 }
 
-#main-home-cliente h2 {
+.main-pagina h2 {
     text-align: center;
     margin: 20px;
 }
