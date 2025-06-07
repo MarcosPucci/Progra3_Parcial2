@@ -49,9 +49,16 @@ function addJuego(juego){
 
     btnFav.addEventListener("click", (event) =>{
         event.preventDefault();
-        listCarrito.push(juego);
+        const juegoEnCarrito = listCarrito.find(j => j.id === juego.id);
+        if(!juegoEnCarrito){
+          juego.cantidad = 1;
+          listCarrito.push(juego);
+        }
+        else{
+          juegoEnCarrito.cantidad += 1;
+        };
         localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
-        mostrarCantidadEnCarrito(listCarrito);
+        mostrarCantidadEnCarrito();
     });
 
     divCard.appendChild(imgJuego);
@@ -70,11 +77,11 @@ function renderJuegos(datosJuegos){
     });
 };
 
-function mostrarCantidadEnCarrito(carrito){
+function mostrarCantidadEnCarrito(){
   let cantidad = 0;
 
-  carrito.forEach(juego =>{
-    cantidad += 1;
+  listCarrito.forEach(juego =>{
+    cantidad += juego.cantidad;
   });
   btnCarrito.textContent = `🛒 Carrito: ${cantidad}`;
 };
@@ -85,6 +92,7 @@ async function initCliente() {
   }
   let datos = await cargarDatos();
   renderJuegos(datos);
+  mostrarCantidadEnCarrito()
 }
 
 initCliente();
@@ -119,7 +127,7 @@ function addCarrito(juego) {
     tituloH3.className = "fw-bold mb-1";
 
     const spanPrecio = document.createElement("span");
-    spanPrecio.innerText = `Precio x ${juego.cantidad}: $${juego.precio}`;
+    spanPrecio.innerText = `Precio x ${juego.cantidad}: $${(juego.precio * juego.cantidad)}`;
     spanPrecio.className = "text-muted mb-2";
 
     const btnBorrar = document.createElement("button");
@@ -133,8 +141,35 @@ function addCarrito(juego) {
         renderCarrito(listCarrito);
     });
 
+    const inputCantidad = document.createElement("input");
+    inputCantidad.type = "number";
+    inputCantidad.min = "1";
+    inputCantidad.value = juego.cantidad;
+    inputCantidad.className = "form-control my-2 text-center";
+    
+    inputCantidad.addEventListener("change", () => {
+        const nuevaCantidad = parseInt(inputCantidad.value);
+        if (nuevaCantidad > 0) {
+            juego.cantidad = nuevaCantidad;
+            localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
+            renderCarrito(listCarrito); // Para actualizar precio si querés
+            mostrarCantidadEnCarrito()
+        };
+    });
+    inputCantidad.addEventListener("keyup", () =>{
+      if(inputCantidad.value === 0){
+        inputCantidad.value = 1;
+      };
+    });
+    inputCantidad.addEventListener("blur", () =>{
+      if(inputCantidad.value === "" || inputCantidad.value === "0"){
+        inputCantidad.value = 1;
+      };
+    });
+
     divJuego.appendChild(tituloH3);
     divJuego.appendChild(spanPrecio);
+    divJuego.appendChild(inputCantidad);
     divJuego.appendChild(btnBorrar);
 
     liContenedor.appendChild(imgJuego);
@@ -142,8 +177,6 @@ function addCarrito(juego) {
 
     return liContenedor;
 }
-
-
 
 function renderCarrito(juegosEnCarrito){
     ulCarrito.innerHTML = "";
@@ -153,6 +186,7 @@ function renderCarrito(juegosEnCarrito){
 };
 
 async function initCarrito() {
+  mostrarCantidadEnCarrito()
   if (!ulCarrito){    
     return;
   }
