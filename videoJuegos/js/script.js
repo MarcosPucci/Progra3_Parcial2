@@ -16,7 +16,7 @@ function cargarDatos() {
     .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
     .catch(err => {
       console.error("Error:", err);
-      return []; //Devuelvo una lista vacia si llega a haber un error
+      return [];
     });
 }
 
@@ -92,7 +92,7 @@ async function initCliente() {
   }
   let datos = await cargarDatos();
   renderJuegos(datos);
-  mostrarCantidadEnCarrito()
+  mostrarCantidadEnCarrito();
 }
 
 initCliente();
@@ -109,16 +109,14 @@ function addCarrito(juego) {
     const liContenedor = document.createElement("div");
     liContenedor.className = "list-group-item d-flex flex-column flex-sm-row align-items-center m-1 gap-3";
 
-    // Imagen del juego
     const imgJuego = document.createElement("img");
-    imgJuego.src = "img/ghost.jpg"; // O juego.imagen si tenés ruta dinámica
+    imgJuego.src = "img/ghost.jpg";
     imgJuego.alt = `Juego de: ${juego.titulo}`;
     imgJuego.className = "rounded";
     imgJuego.style.width = "100px";
     imgJuego.style.height = "100px";
     imgJuego.style.objectFit = "cover";
 
-    // Contenido del juego
     const divJuego = document.createElement("div");
     divJuego.className = "d-flex flex-column justify-content-center text-center text-sm-start";
 
@@ -136,8 +134,12 @@ function addCarrito(juego) {
 
     btnBorrar.addEventListener("click", (event) => {
         event.preventDefault();
-        listCarrito = listCarrito.filter(j => j !== juego);
-        localStorage.setItem("carrito", JSON.stringify(listCarrito));
+
+        console.log(listCarrito);
+        listCarrito = listCarrito.filter(j => j.id !== juego.id);
+        console.log(listCarrito);
+        
+        localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
         renderCarrito(listCarrito);
     });
 
@@ -152,18 +154,26 @@ function addCarrito(juego) {
         if (nuevaCantidad > 0) {
             juego.cantidad = nuevaCantidad;
             localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
-            renderCarrito(listCarrito); // Para actualizar precio si querés
+            renderCarrito(listCarrito);
             mostrarCantidadEnCarrito()
         };
     });
     inputCantidad.addEventListener("keyup", () =>{
       if(inputCantidad.value === 0){
         inputCantidad.value = 1;
+        juego.cantidad = parseInt(inputCantidad.value);
+        localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
+        renderCarrito(listCarrito);
+        mostrarCantidadEnCarrito()
       };
     });
     inputCantidad.addEventListener("blur", () =>{
       if(inputCantidad.value === "" || inputCantidad.value === "0"){
         inputCantidad.value = 1;
+        juego.cantidad = parseInt(inputCantidad.value);
+        localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
+        renderCarrito(listCarrito);
+        mostrarCantidadEnCarrito()
       };
     });
 
@@ -176,21 +186,21 @@ function addCarrito(juego) {
     liContenedor.appendChild(divJuego);
 
     return liContenedor;
-}
+};
 
 function renderCarrito(juegosEnCarrito){
     ulCarrito.innerHTML = "";
     juegosEnCarrito.forEach(juego => {
         ulCarrito.appendChild(addCarrito(juego));
     });
+    mostrarCantidadEnCarrito();
 };
 
 async function initCarrito() {
-  mostrarCantidadEnCarrito()
+  mostrarCantidadEnCarrito();
   if (!ulCarrito){    
     return;
   }
-  console.log(listCarrito);
   renderCarrito(listCarrito);
 }
 
