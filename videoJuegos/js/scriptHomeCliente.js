@@ -65,7 +65,7 @@ function addJuego(juego){
 
     const parrPrecio = document.createElement("p");
     parrPrecio.innerText = `$${juego.precio}`;
-    parrPrecio.className = "text-center fw-bold text-success fs-4" //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
+    parrPrecio.className = "text-center fw-bold text-success fs-4"; //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
 
     const btnFav = document.createElement("button");
     btnFav.textContent = "Agregar al carrito";
@@ -73,7 +73,7 @@ function addJuego(juego){
 
     btnFav.addEventListener("click", (event) =>{
         event.preventDefault();
-        const juegoEnCarrito = listCarrito.find(j => j.id === juego.id);
+        const juegoEnCarrito = listCarrito.find(j => j.id === juego.id && j.categoria === juego.categoria);
         if(!juegoEnCarrito){
           juego.cantidad = 1;
           listCarrito.push(juego);
@@ -113,7 +113,7 @@ function mostrarCantidadEnCarrito(){
 async function initCliente() {
   if (!divContenedorDatos){    
     return;
-  }
+  };
   let datos = await cargarDatosJuegosPlay();
   renderJuegos(datos);
   mostrarCantidadEnCarrito();

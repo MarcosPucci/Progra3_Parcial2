@@ -4,6 +4,7 @@
 
 const ulCarrito = document.getElementById("ul-carrito");
 const btnCarrito = document.getElementById("btn-carrito");
+const totalPagar = document.getElementById("total-pagar");
 
 /*~~~~~~~~~~~~~ Variables a usar ~~~~~~~~~~~~~*/
 
@@ -41,11 +42,9 @@ function addCarrito(juego) {
     btnBorrar.addEventListener("click", (event) => {
         event.preventDefault();
 
-        console.log(listCarrito);
-        listCarrito = listCarrito.filter(j => j.id !== juego.id);
-        console.log(listCarrito);
-        
+        listCarrito = listCarrito.filter(j => !(j.id === juego.id && j.categoria === juego.categoria));      
         localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
+
         renderCarrito(listCarrito);
     });
 
@@ -100,6 +99,8 @@ function renderCarrito(juegosEnCarrito){
         ulCarrito.appendChild(addCarrito(juego));
     });
     mostrarCantidadEnCarrito();
+    totalPagar.innerHTML = "";
+    totalPagar.innerHTML = mostrarTotalPagar()
 };
 
 function mostrarCantidadEnCarrito(){
@@ -109,6 +110,14 @@ function mostrarCantidadEnCarrito(){
     cantidad += juego.cantidad;
   });
   btnCarrito.textContent = `🛒 Carrito: ${cantidad}`;
+};
+
+function mostrarTotalPagar(){
+    let total = 0;
+    listCarrito.forEach(j =>{
+        total += (j.precio * j.cantidad);
+    });
+    return total;
 };
 
 function initCarrito() {
