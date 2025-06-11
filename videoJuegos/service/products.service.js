@@ -1,6 +1,6 @@
-import { Product } from "../models/product.model.js"
-import * as products from "../json/juegos.json" 
-import { Juego } from "../models/products.model.js"
+import { Juego } from "../models/product.model.js"
+import products from "../data/juegos.json" with { type: "json" }
+
 
 // SERVICIO DE PRODUCTOS
 // Contiene la lógica para manejar productos
@@ -11,7 +11,7 @@ products.forEach((j) => {
     juegos.push(products[j.id]) 
 })
 
-const juegosService = {
+const productsService = {
     // Obtiene todos los productos
     getAll() {
         return products
@@ -24,7 +24,7 @@ const juegosService = {
 
     // Obtiene productos por categoria
     getByCategory(categoria) {
-        return products.filter((juego) => juego.categoria)
+        return products.filter((juego) => juego.categoria === categoria)
     },
 
     // Obtiene por ID

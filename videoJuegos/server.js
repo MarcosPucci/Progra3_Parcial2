@@ -5,7 +5,7 @@ import cors from "cors"
 
 // Imports de las rutas
 import productRoutes from "./routes/products.route.js"
-import salesRoutes from "./routes/sales.route.js"
+/* import salesRoutes from "./routes/sales.route.js" */
 //import authRoutes from "./routes/auth.route.js" -> crear modulo de atentificacion admins
 
 
@@ -30,26 +30,26 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
-app.use("/api/products", productRoutes) // Rutas para productos
-app.use("/api/sales", salesRoutes) // Rutas para ventas
-app.use("/api/auth", authRoutes) // Rutas para autenticación
+//app.use("/api/products", productRoutes) // Rutas para productos
+/* app.use("/api/sales", salesRoutes) */ // Rutas para ventas
+/* app.use("/api/auth", authRoutes) */ // Rutas para autenticación
 
 
 // RUTAS PARA CLIENTES (página principal)
 app.get("/", (req, res) => {
   // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "public", "cliente", "login.html"))
+  res.sendFile(path.join(__dirname, "public", "cliente", "index.html"))
 })
 
 //RECORDATORIO: Faltan rutas del admin
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
-app.use("*", (req, res) => {
+/* app.use("*", (req, res) => {
   res.status(404).sendFile(path.join(__dirname, "public", "404.html"))
-})
+}) */
 
 app.listen(app.get("PORT"), () => {
   console.log(`Servidor corriendo en http://localhost:${app.get("PORT")}`)
-  console.log(`Interfaz Cliente: http://localhost:${app.get("PORT")}/`)
+  //console.log(`Interfaz Cliente: http://localhost:${app.get("PORT")}/`)
 })
 
