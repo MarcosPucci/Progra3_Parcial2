@@ -97,6 +97,8 @@ form input {
 
 /* SECCIÓN DEL VIDEO */
 #div-video { 
+    position: relative;
+    top: -390px;
     flex-grow: 1; /* Hace que el header (video) ocupe todo el espacio horizontal restante */
     display: flex;
     justify-content: center;
