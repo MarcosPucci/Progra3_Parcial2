@@ -18,15 +18,6 @@ const __dirname = path.dirname(__filename)
 
 //Config
 app.set('PORT', 5000)
-/*============================================================*/
-import viewRoutes from "./routes/views.routes.js";
-
-app.set("view engine", "ejs");
-app.set("views", "./FrontEnd/ejsAdmin");
-
-app.use("/", viewRoutes);
-
-/*============================================================*/
 
 //Middlewares
 app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
@@ -35,7 +26,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'public' será accesible desde el navegador
-app.use(express.static(path.join(__dirname,'..', 'frontend', 'public')));
+app.use(express.static(path.join(__dirname,'..', 'frontend')));
 
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
@@ -47,13 +38,23 @@ app.use("/api/products", productRoutes) // Rutas para productos
 // RUTAS PARA CLIENTES (página principal)
 app.get("/", (req, res) => {
   // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "..","frontend", "public","cliente", "index.html"))
+  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "inicioCliente.html"))
+})
+
+app.get("/home-cliente", (req, res) => {
+  // Esta es la página que ven los CLIENTES en el autoservicio
+  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "homeCliente.html"))
+})
+
+app.get("/carrito-cliente", (req, res) => {
+  // Esta es la página que ven los CLIENTES en el autoservicio
+  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "carrito.html"))
 })
 
 //RECORDATORIO: Faltan rutas del admin
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
-app.use("/*splat", (req, res) => {
+app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
     res.status(404).send(`
         <!DOCTYPE html>
         <html lang="es">

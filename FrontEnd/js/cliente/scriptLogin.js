@@ -8,7 +8,7 @@ btnIngresar.addEventListener("click", () =>{
     if(!verificarNombreIngresado(nombre)){
         nombreUsuario = "Usuario anonimo";
     };
-    window.location.href = "homeCliente.html";
+    window.location.href = "/home-cliente";
 });
 
 function verificarNombreIngresado(nombre){

@@ -25,7 +25,7 @@ btnPlay.addEventListener("click", async (event) =>{
 });
 
 function cargarDatosJuegosPlay() {
-  return fetch("/FrontEnd/json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
+  return fetch("/json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
     .then(res => res.json())
     .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
     .catch(err => {
@@ -35,7 +35,7 @@ function cargarDatosJuegosPlay() {
 };
 
 function cargarDatosJuegosPc() {
-  return fetch("/FrontEnd/json/juegosPc.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
+  return fetch("/json/juegosPc.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
     .then(res => res.json())
     .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
     .catch(err => {

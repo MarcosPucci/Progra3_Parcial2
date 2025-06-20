@@ -87,7 +87,6 @@ function addJuego(juego){
     btnEditar.addEventListener("click", (event) =>{
       event.preventDefault();
       window.location.href = "/edicion-admin";
-      // window.location.href = `/edicion-admin/${juego.id}`;
     });
 
     btnEditar.addEventListener("click", (event) =>{
@@ -103,7 +102,7 @@ function addJuego(juego){
       event.preventDefault();
       juego.activo = !juego.activo;
       btnEstadoProducto.textContent = juego.activo ? "Desactivar" : "Activar";
-    })
+    });
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
