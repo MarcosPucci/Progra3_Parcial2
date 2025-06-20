@@ -17,7 +17,7 @@ function addCarrito(juego) {
     liContenedor.className = "list-group-item d-flex flex-column flex-sm-row align-items-center m-1 gap-3";
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = "img/ghost.jpg";
+    imgJuego.src = "/FrontEnd/img/ghost.jpg";
     imgJuego.alt = `Juego de: ${juego.titulo}`;
     imgJuego.className = "rounded";
     imgJuego.style.width = "100px";

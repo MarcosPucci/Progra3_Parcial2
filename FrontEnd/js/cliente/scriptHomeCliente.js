@@ -25,7 +25,7 @@ btnPlay.addEventListener("click", async (event) =>{
 });
 
 function cargarDatosJuegosPlay() {
-  return fetch("json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
+  return fetch("/FrontEnd/json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
     .then(res => res.json())
     .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
     .catch(err => {
@@ -35,7 +35,7 @@ function cargarDatosJuegosPlay() {
 };
 
 function cargarDatosJuegosPc() {
-  return fetch("json/juegosPc.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
+  return fetch("/FrontEnd/json/juegosPc.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
     .then(res => res.json())
     .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
     .catch(err => {
@@ -52,7 +52,7 @@ function addJuego(juego){
     divCard.className = "card"; //Clase de bootstrap para dar formato a la presentacion del juego
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = "img/ghost.jpg";
+    imgJuego.src = "/FrontEnd/img/ghost.jpg";
     imgJuego.alt = `Juego de: ${juego.titulo}`;
 
     const tituloH3 = document.createElement("h3");
