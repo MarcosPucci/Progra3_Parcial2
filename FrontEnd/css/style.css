@@ -286,3 +286,11 @@ form input {
     background-color: rgba(255, 255, 255, 0.678);
     color: black;
 }
+.card-body{
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    box-shadow:  1px 0 15px rgba(255, 255, 255, 0.705);
+}
+table{
+    border: none;
+}

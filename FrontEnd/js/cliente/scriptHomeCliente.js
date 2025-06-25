@@ -13,6 +13,11 @@ let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 
 /*~~~~~~~~~~~~~ Funciones del home ~~~~~~~~~~~~~*/
 
+btnCarrito.addEventListener("click", (event) =>{
+  event.preventDefault();
+  window.location.href = "/htmlCliente/carrito.html";
+});
+
 btnPc.addEventListener("click", async (event) =>{
   event.preventDefault();
   let datos = await cargarDatosJuegosPc();
