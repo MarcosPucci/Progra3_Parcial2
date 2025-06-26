@@ -1,89 +1,124 @@
-import { Juego } from "../models/product.model.js"
-import products from "../../frontend/json/juegos.json" with { type: "json" }
-
+import Juego from "../models/product.model.js"
 
 // SERVICIO DE PRODUCTOS
-// Contiene la lógica para manejar productos
-
-const juegos = []
-
-products.forEach((j) => {
-  juegos.push(j)
-})
+// Contiene la lógica para manejar productos usando Sequelize
 
 const productsService = {
     // Obtiene todos los productos
-    getAll() {
-        return products
+    async getAll() {
+        try {
+            const productos = await Juego.findAll()
+            return productos
+        } catch (error) {
+            throw new Error(`Error al obtener productos: ${error.message}`)
+        }
     },
 
     // Obtiene solo productos activos
-    getActive() {
-        return juegos.filter((juego) => juego.activo)
+    async getActive() {
+        try {
+            const productos = await Juego.findAll({
+                where: {
+                    activo: true
+                }
+            })
+            return productos
+        } catch (error) {
+            throw new Error(`Error al obtener productos activos: ${error.message}`)
+        }
     },
 
     // Obtiene productos por categoria
-    getByCategory(categoria) {
-        return products.filter((juego) => juego.categoria === categoria)
+    async getByCategory(categoria) {
+        try {
+            const productos = await Juego.findAll({
+                where: {
+                    categoria: categoria,
+                    activo: true
+                }
+            })
+            return productos
+        } catch (error) {
+            throw new Error(`Error al obtener productos por categoría: ${error.message}`)
+        }
     },
 
     // Obtiene por ID
-    getById(id) {
-        return products.filter((juego) => juego.id === id)
+    async getById(id) {
+        try {
+            const producto = await Juego.findByPk(id)
+            return producto
+        } catch (error) {
+            throw new Error(`Error al obtener producto por ID: ${error.message}`)
+        }
     },
 
-    create(productData) {
-        const nuevoJuego = new Juego(
-            productData.nombre,
-            productData.titulo,
-            productData.genero,
-            productData.añoDeSalida,
-            productData.precio,
-            productData.categoria,
-            productData.img,
-            productData.descripcion,
-        )
-
-        juegos.push(nuevoJuego)
-        return nuevoJuego
-
+    // Crear un nuevo producto
+    async create(productData) {
+        try {
+            const nuevoJuego = await Juego.create({
+                titulo: productData.titulo,
+                genero: productData.genero,
+                anioDeSalida: productData.anioDeSalida,
+                categoria: productData.categoria,
+                precio: productData.precio,
+                descripcion: productData.descripcion,
+                img: productData.img,
+                activo: true,
+                cantidad: productData.cantidad || 1
+            })
+            return nuevoJuego
+        } catch (error) {
+            throw new Error(`Error al crear producto: ${error.message}`)
+        }
     },
 
     // Actualizar un producto existente
-    update(id, productData) {
-        const juego = this.getById(id)
+    async update(id, productData) {
+        try {
+            const producto = await Juego.findByPk(id)
+            
+            if (!producto) {
+                throw new Error('Producto no encontrado')
+            }
 
-        if(!juego) {
-            throw new Error('Juego no encontrado')
+            await producto.update(productData)
+            return producto
+        } catch (error) {
+            throw new Error(`Error al actualizar producto: ${error.message}`)
         }
-
-        juego.update(productData)
-        return juego
     },
 
+    // Desactivar un producto
+    async deactivate(id) {
+        try {
+            const producto = await Juego.findByPk(id)
+            
+            if (!producto) {
+                throw new Error("Producto no encontrado")
+            }
 
-    //Desactivar un producto
-    deactivate(id) {
-        const juego = this.getById(id)
-
-        if (!juego) {
-            throw new Error("Juego no encontrado")
+            await producto.update({ activo: false })
+            return producto
+        } catch (error) {
+            throw new Error(`Error al desactivar producto: ${error.message}`)
         }
-
-        juego.deactivate()
-        return juego
     },
 
     // Activar un producto
-     activate(id) {
-        const juego = this.getById(id)
+    async activate(id) {
+        try {
+            const producto = await Juego.findByPk(id)
+            
+            if (!producto) {
+                throw new Error("Producto no encontrado")
+            }
 
-        if (!juego) {
-            throw new Error("Juego no encontrado")
+            await producto.update({ activo: true })
+            return producto
+        } catch (error) {
+            throw new Error(`Error al activar producto: ${error.message}`)
         }
-
-        juego.activate()
-        return juego
     },
 }
 

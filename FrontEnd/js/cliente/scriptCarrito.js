@@ -15,7 +15,7 @@ let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 
 btnFinalizarCompra.addEventListener("click", (event) =>{
   event.preventDefault();
-  fetch('/api/finalizar-compra', {
+  fetch('/api/finalizarCompra', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(listCarrito)

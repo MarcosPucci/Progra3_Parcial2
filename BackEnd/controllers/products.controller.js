@@ -5,18 +5,15 @@ import productsService from "../service/products.service.js"
 
 const productsController = {
   // GET /api/products - Obtener todos los productos
-  getAll(req, res) {
+  async getAll(req, res) {
     try {
-        
-      const products = productsService.getAll()
+      const products = await productsService.getAll()
       res.status(200).json({
         success: true,
         data: products,
         message: "Productos obtenidos correctamente",
       })
-
     } catch (error) {
-
       res.status(500).json({
         success: false,
         message: "Error al obtener productos",
@@ -26,9 +23,9 @@ const productsController = {
   },
 
   // GET /api/products/active - Obtener solo productos activos
-  getActive(req, res) {
+  async getActive(req, res) {
     try {
-      const products = productsService.getActive()
+      const products = await productsService.getActive()
       res.status(200).json({
         success: true,
         data: products,
@@ -44,10 +41,10 @@ const productsController = {
   },
 
   // GET /api/products/:id - Obtener un producto por ID
-  getById(req, res) {
+  async getById(req, res) {
     try {
       const { id } = req.params // Extraemos el ID de los parámetros de la URL
-      const product = productsService.getById(id)
+      const product = await productsService.getById(id)
 
       if (!product) {
         return res.status(404).json({
@@ -71,19 +68,19 @@ const productsController = {
   },
 
   // POST /api/products - Crear un nuevo producto
-  create(req, res) {
+  async create(req, res) {
     try {
       const productData = req.body // Datos enviados en el cuerpo de la petición
 
       // Validaciones básicas
-      if (!productData.name || !productData.price || !productData.category) {
+      if (!productData.titulo || !productData.precio || !productData.categoria) {
         return res.status(400).json({
           success: false,
-          message: "Faltan datos requeridos: name, price, category",
+          message: "Faltan datos requeridos: titulo, precio, categoria",
         })
       }
 
-      const newProduct = productsService.create(productData)
+      const newProduct = await productsService.create(productData)
 
       res.status(201).json({
         success: true,
@@ -100,12 +97,12 @@ const productsController = {
   },
 
   // PUT /api/products/:id - Actualizar un producto
-  update(req, res) {
+  async update(req, res) {
     try {
       const { id } = req.params
       const productData = req.body
 
-      const updatedProduct = productsService.update(id, productData)
+      const updatedProduct = await productsService.update(id, productData)
 
       res.status(200).json({
         success: true,
@@ -129,10 +126,10 @@ const productsController = {
   },
 
   // DELETE /api/products/:id - Desactivar un producto
-  deactivate(req, res) {
+  async deactivate(req, res) {
     try {
       const { id } = req.params
-      const product = productsService.deactivate(id)
+      const product = await productsService.deactivate(id)
 
       res.status(200).json({
         success: true,
@@ -156,10 +153,10 @@ const productsController = {
   },
 
   // PATCH /api/products/:id/activate - Activar un producto
-  activate(req, res) {
+  async activate(req, res) {
     try {
       const { id } = req.params
-      const product = productsService.activate(id)
+      const product = await productsService.activate(id)
 
       res.status(200).json({
         success: true,

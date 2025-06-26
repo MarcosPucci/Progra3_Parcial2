@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./BackEnd/server.js",
     "dev": "nodemon ./BackEnd/server.js",
+    "seed": "node ./BackEnd/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

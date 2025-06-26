@@ -2,10 +2,12 @@ import express from "express"
 import path from "path"
 import url from "url"
 import cors from "cors"
+import sequelize from "./config/db-sequelize.js";
+import envs from "./config/envs.js";
 
 // Imports de las rutas
 import productRoutes from "./routes/products.route.js"
-/* import salesRoutes from "./routes/sales.route.js" */
+import salesRoutes from "./routes/sales.route.js"
 //import authRoutes from "./routes/auth.route.js" -> crear modulo de atentificacion admins
 
 
@@ -17,7 +19,16 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 //Config
-app.set('PORT', 5000)
+app.set('PORT', envs.port || 5000)
+
+const incializeConnection = async () => {
+  try {
+    await sequelize.sync()
+    console.log("Database synchronized");
+  } catch(err) {
+    console.error(err);
+  }
+}
 
 //Middlewares
 app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
@@ -25,30 +36,37 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
-// Todo lo que esté en la carpeta 'public' será accesible desde el navegador
-app.use(express.static(path.join(__dirname,'..', 'frontend')));
+// Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
+app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
 
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos
-/* app.use("/api/sales", salesRoutes) */ // Rutas para ventas
+app.use("/api", salesRoutes) // Rutas para ventas
 /* app.use("/api/auth", authRoutes) */ // Rutas para autenticación
 
 
 // RUTAS PARA CLIENTES (página principal)
 app.get("/", (req, res) => {
   // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "inicioCliente.html"))
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "inicioCliente.html"))
 })
 
-app.get("/home-cliente", (req, res) => {
-  // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "homeCliente.html"))
+
+app.get("/homeCliente.html", (req, res) => {
+  // Ruta directa para acceder a homeCliente.html
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "homeCliente.html"))
 })
 
-app.get("/carrito-cliente", (req, res) => {
-  // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "..","frontend", "htmlCliente", "carrito.html"))
+
+app.get("/carritoCliente.html", (req, res) => {
+  // Ruta directa para acceder a carrito.html
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "carrito.html"))
+})
+
+app.get("/ticketCliente.html", (req, res) => {
+  // Ruta para mostrar el ticket de la venta
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "facturaCliente.html"))
 })
 
 //RECORDATORIO: Faltan rutas del admin
@@ -78,6 +96,9 @@ app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
         </html>
     `);
 });
+
+//Listeners
+incializeConnection()
 
 app.listen(app.get("PORT"), () => {
   console.log(`Servidor corriendo en http://localhost:${app.get("PORT")}`)
