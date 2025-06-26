@@ -15,16 +15,17 @@ let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 
 btnFinalizarCompra.addEventListener("click", (event) =>{
   event.preventDefault();
-  fetch('/api/finalizar-compra', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(listCarrito)
-  })
-  .then(res => res.json())
-  .then(data => {
-    const ventaId = data.id; // ID de la venta guardada en la base
-    window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
-  });
+  // fetch('/api/finalizar-compra', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify(listCarrito)
+  // })
+  // .then(res => res.json())
+  // .then(data => {
+  //   const ventaId = data.id; // ID de la venta guardada en la base
+  //   window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+  // });
+  window.location.href = "../htmlCliente/facturaCliente.html";
 });
 
 function addCarrito(juego) {
