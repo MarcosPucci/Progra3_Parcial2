@@ -100,11 +100,33 @@ function addJuego(juego){
     btnEstadoProducto.textContent = juego.activo ? "Desactivar" : "Activar";
     btnEstadoProducto.className = "btn btn-secondary fw-bold px-3";
 
-    btnEstadoProducto.addEventListener("click", (event) =>{
+    btnEstadoProducto.addEventListener("click", async (event) => {
       event.preventDefault();
+
       juego.activo = !juego.activo;
       btnEstadoProducto.textContent = juego.activo ? "Desactivar" : "Activar";
+
+      try {
+        const response = await fetch(`/api/productos/${juego.id}/estado`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ estado: juego.activo ? 1 : 0 }) // 1 = activo, 0 = inactivo
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data.mensaje);
+        } else {
+          alert('Error al cambiar el estado del producto');
+        }
+      } catch (err) {
+        console.error('Error al conectar con el servidor:', err);
+        alert('No se pudo actualizar el estado en la base de datos');
+      }
     });
+
 
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
