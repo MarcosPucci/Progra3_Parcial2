@@ -4,6 +4,12 @@ const bodyPagina = document.getElementsByClassName("body-pagina")[0];
 const headerPagina = document.getElementsByClassName("barra-menu")[0];
 const divCatalogo = document.getElementsByClassName("div-catalogo")[0];
 const btnesCategorias = document.querySelectorAll(".btn-categorias");
+const btnAgregar = document.getElementById("btn-agregar-p");
+
+btnAgregar.addEventListener("click", (event) =>{
+  event.preventDefault();
+  window.location.href = "/edicion-admin";
+});
 
 btnCambiarTema.addEventListener("click", (event) => {
   event.preventDefault();
@@ -84,14 +90,10 @@ function addJuego(juego){
     const btnEditar = document.createElement("button");
     btnEditar.textContent = "Editar";
     btnEditar.className = "btn btn-warning fw-bold px-3";
-    btnEditar.addEventListener("click", (event) =>{
-      event.preventDefault();
-      window.location.href = "/edicion-admin";
-    });
 
     btnEditar.addEventListener("click", (event) =>{
-        event.preventDefault();
-        
+      event.preventDefault();
+      window.location.href = `/edicion-admin?id=${juego.id}`;
     });
 
     const btnEstadoProducto = document.createElement("button");
@@ -107,6 +109,25 @@ function addJuego(juego){
     const btnEliminar = document.createElement("button");
     btnEliminar.textContent = "Eliminar";
     btnEliminar.className = "btn btn-danger fw-bold px-3";
+
+    btnEliminar.addEventListener("click", async (event) =>{
+      event.preventDefault();
+      if (confirm("¿Seguro que querés eliminar este producto?")) {
+        try {
+          const response = await fetch(`/api/productos/${juego.id}`, {
+            method: "DELETE"
+          });
+            if (response.ok) {
+              alert("Producto eliminado.");
+            } else {
+              alert("Error al eliminar el producto.");
+            }
+        } catch (err) {
+          console.error("Error:", err);
+          alert("Error al intentar eliminar el producto.");
+        }
+      }
+    });
 
     divBotones.appendChild(btnEditar);
     divBotones.appendChild(btnEstadoProducto);
