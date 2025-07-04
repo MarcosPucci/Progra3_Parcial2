@@ -1,12 +1,22 @@
+
 /*================================ Etiquetas html ======================================*/
 const tbodyTable = document.getElementById("tbody-table");
 const totalPagoHTML = document.getElementById("total-factura");
 const fechaHoyHTML = document.getElementById("fecha-id");
 const nombreClienteHTML = document.getElementById("nombre-cliente");
+const btnSalir = document.getElementById("btn-salir");
 
 /*================================ Variables a usar ======================================*/
 let nombre = localStorage.getItem("nombreCliente");
 let juegosComprados = JSON.parse(localStorage.getItem("listCarrito"));
+
+/*========================================================================================*/
+
+btnSalir.addEventListener("click", (event) =>{
+    event.preventDefault();
+    localStorage.removeItem("nombreCliente");
+    window.location.href = "/";
+})
 
 function insertarDatosCompra(juego){
     const trTable = document.createElement("tr");
@@ -46,7 +56,7 @@ function init(){
     fechaHoyHTML.innerText = "Fecha: " + new Date().toLocaleDateString();
     nombreClienteHTML.innerHTML = "Factura a nombre de: " + localStorage.getItem("nombreCliente");
     renderFacturaCompra();
-    totalPagoHTML.innerText = `Total a pagar: $${calcularTotal()}`;
+    totalPagoHTML.innerText = `Total de la compra: $${calcularTotal()}`;
     localStorage.removeItem("listCarrito");
 };
 

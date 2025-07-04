@@ -10,15 +10,15 @@
     <title>Carrito</title>
 </head>
 <body class="body-pagina">
-    <header id="barra-menu">
+    <header class="barra-menu">
         <div id="icon-text">
             <img src="/img/logo.png" alt="Logo" id="logo-menu">
             <h1>Punto de Control</h1>
         </div>
         <div id="div-alumnos" class="text-center mx-4">
-            <p>Alumnos: Marcos | Marcos Pucci</p>
+            <p>Alumnos: Marcos Fernandez | Marcos Pucci</p>
         </div>
-    </header>
+  </header>
 
     <main class="main-pagina">
         <div id="div-btnes-home">
@@ -39,6 +39,17 @@
             </div>
         </div>
     </main>
+    <!--------------------------------------------------------------------------------------------------------->
+    <div id="miModal" class="d-flex justify-content-center align-items-center">
+        <div class="contenido text-center">
+            <h5 class="mb-3">¿Deseás confirmar la compra?</h5>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" onclick="confirmar()">Sí, confirmar</button>
+                <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <!--------------------------------------------------------------------------------------------------------->
     <script src="/js/cliente/scriptCarrito.js"></script>
 </body>
 </html>

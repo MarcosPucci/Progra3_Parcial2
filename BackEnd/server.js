@@ -40,6 +40,10 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
 
 
+// app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
+
+
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas

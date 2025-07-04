@@ -15,16 +15,20 @@ let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 
 btnFinalizarCompra.addEventListener("click", (event) =>{
   event.preventDefault();
-  fetch('/api/finalizarCompra', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(listCarrito)
-  })
-  .then(res => res.json())
-  .then(data => {
-    const ventaId = data.id; // ID de la venta guardada en la base
-    window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
-  });
+  if(listCarrito.length > 0){
+    fetch('/api/finalizarCompra', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(listCarrito)
+    })
+    .then(res => res.json())
+    .then(data => {
+      const ventaId = data.id; // ID de la venta guardada en la base
+      window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+    });
+  }else{
+    alert("No ingresó ningun producto.")
+  }
 });
 
 function addCarrito(juego) {
@@ -32,7 +36,7 @@ function addCarrito(juego) {
     liContenedor.className = "list-group-item d-flex flex-column flex-sm-row align-items-center m-1 gap-3";
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = "/img/ghost.jpg";
+    imgJuego.src = `/${juego.img}`;
     imgJuego.alt = `Juego de: ${juego.titulo}`;
     imgJuego.className = "rounded";
     imgJuego.style.width = "100px";

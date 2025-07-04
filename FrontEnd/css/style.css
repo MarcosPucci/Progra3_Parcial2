@@ -177,18 +177,10 @@ form input {
 }
 .barra-menu {
     background-color: #000000;
-    display: flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items: center;
     box-shadow: 1px 0px 15px #fdfdfd6e;
     border-radius: 25px;
     margin-top: 25px;
     padding-top: 10;
-}
-#icon-text{
-    display: flex;
-    align-items: center;
 }
 #logo-menu {
     height: 100px;
