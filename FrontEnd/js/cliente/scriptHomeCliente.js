@@ -3,6 +3,7 @@
 /*~~~~~~~~~~~~~ Etiquetas a usar del html ~~~~~~~~~~~~~*/
 
 const divContenedorDatos = document.getElementById("div-contenedor");
+const inputBuscar = document.getElementById("input-buscar");
 const btnCarrito = document.getElementById("btn-carrito");
 const btnPc = document.getElementById("btn-pc");
 const btnPlay = document.getElementById("btn-play");
@@ -60,33 +61,49 @@ btnCarrito.addEventListener("click", (event) =>{
 
 btnPc.addEventListener("click", async (event) =>{
   event.preventDefault();
-
-  initCliente("PC");
+  categoriaActual = "PC";
+  initCliente(categoriaActual);
 });
 
 btnPlay.addEventListener("click", async (event) =>{
   event.preventDefault();
-  initCliente("PS4");
+  categoriaActual = "PS4"
+  initCliente(categoriaActual);
 });
+
+inputBuscar.addEventListener("keyup", (event) =>{
+  event.preventDefault();
+  const texto = event.target.value;
+  const juegosFiltrados = buscarNombreJuego(texto);
+  renderJuegos(juegosFiltrados);
+
+});
+
+function buscarNombreJuego(texto) {
+  let nuevosDatos = datos.filter(j => j.categoria === categoriaActual && j.titulo.toLowerCase().includes(texto.toLowerCase()));
+
+  return nuevosDatos;
+};
 
 function filtarJuegoCategoria(categoriaJuego){
   let datosFiltrados = datos.filter(j => j.categoria === categoriaJuego);
-  // console.log(datosFiltrados);
-  
+
   return datosFiltrados;
 };
 
 function cambiarTemaDeTarjetas() {
   const tarjetas = document.querySelectorAll(".tarjeta-juego");
-  const tema = localStorage.getItem("tema");
 
   tarjetas.forEach(card => {
-    card.classList.toggle("bg-black", tema === "oscuro");
-    card.classList.toggle("text-white", tema === "oscuro");
-    card.classList.toggle("bg-light", tema === "claro");
-    card.classList.toggle("text-black", tema === "claro");
+    card.classList.remove("bg-black", "text-white", "bg-light", "text-black");
+
+    if (tema === "oscuro") {
+      card.classList.add("bg-black", "text-white");
+    } else {
+      card.classList.add("bg-light", "text-black");
+    }
   });
-}
+};
 
 function cargarDatosJuegos() {
   return fetch("/api/products/")
@@ -154,6 +171,7 @@ function renderJuegos(datosJuegos){
     datosJuegos.forEach(juego => {
         divContenedorDatos.appendChild(addJuego(juego));
     });
+    cambiarTemaDeTarjetas();
 };
 
 function mostrarCantidadEnCarrito(){
@@ -172,8 +190,8 @@ async function initCliente(categoriaJuego) {
   datos = await cargarDatosJuegos();
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
   mostrarCantidadEnCarrito();
-  cambiarTemaDeTarjetas();
 };
 
 let datos = [];
-initCliente("PS4");
+let categoriaActual = "PS4";
+initCliente(categoriaActual);
