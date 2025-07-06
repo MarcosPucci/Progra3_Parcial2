@@ -15,7 +15,7 @@ const headerPagina = document.getElementsByClassName("barra-menu")[0];
 /*~~~~~~~~~~~~~ Variables a usar ~~~~~~~~~~~~~*/
 
 let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
-const tema = localStorage.getItem("tema");
+let tema = localStorage.getItem("tema") || "oscuro";
 
 /*~~~~~~~~~~~~~ Funciones del carrito ~~~~~~~~~~~~~*/
 
@@ -40,26 +40,51 @@ btnCamibarTema.addEventListener("click", (event) =>{
     card.classList.toggle("bg-light", !esClaro);
     card.classList.toggle("text-black", !esClaro);
   });
-  localStorage.setItem("tema", !esClaro ? "claro" : "oscuro");
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
 });
 
-btnFinalizarCompra.addEventListener("click", (event) =>{
+btnFinalizarCompra.addEventListener("click", async (event) =>{
   event.preventDefault();
   if(listCarrito.length > 0){
-    fetch('/api/finalizarCompra', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(listCarrito)
-    })
-    .then(res => res.json())
-    .then(data => {
-      const ventaId = data.id; // ID de la venta guardada en la base
-      window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
-    });
+    const respuesta = await mostrarModalConfirmacion();
+
+    if (respuesta) {
+      fetch('/api/finalizarCompra', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(listCarrito)
+      })
+      .then(res => res.json())
+      .then(data => {
+        const ventaId = data.id; // ID de la venta guardada en la base
+        window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+      });
+    };
   }else{
-    alert("No ingresó ningun producto.")
-  }
+      alert("No ingresó ningun producto.")
+    };
 });
+
+function mostrarModalConfirmacion() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("miModal");
+    modal.classList.remove("d-none");
+
+    const btnConfirmar = modal.querySelector("#btn-confirmar");
+    const btnCancelar = modal.querySelector("#btn-cancelar");
+
+    btnConfirmar.onclick = () => {
+      modal.classList.add("d-none");
+      resolve(true);
+    };
+
+    btnCancelar.onclick = () => {
+      modal.classList.add("d-none");
+      resolve(false);
+    };
+  });
+}
 
 function cambiarTemaDeTarjetas(){
   const tarjetas = document.querySelectorAll(".tarjeta-juego");

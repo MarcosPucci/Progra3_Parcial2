@@ -8,7 +8,6 @@ const btnCarrito = document.getElementById("btn-carrito");
 const btnPc = document.getElementById("btn-pc");
 const btnPlay = document.getElementById("btn-play");
 const btnTemaClaro = document.getElementsByClassName("boton-tema-pagina")[0];
-
 const headerPagina = document.getElementsByClassName("barra-menu")[0];
 const bodyPagina = document.getElementsByClassName("body-pagina")[0];
 const divCatalogo = document.getElementsByClassName("div-catalogo")[0];
@@ -17,7 +16,9 @@ const btnesCategorias = document.querySelectorAll(".btn-categorias");
 /*~~~~~~~~~~~~~ Variables a usar~~~~~~~~~~~~~*/
 
 let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
-const tema = localStorage.getItem("tema");
+let tema = localStorage.getItem("tema") || "oscuro";
+let datos = [];
+let categoriaActual = "PS4";
 
 /*~~~~~~~~~~~~~ Funciones del home ~~~~~~~~~~~~~*/
 
@@ -27,10 +28,7 @@ window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuand
     headerPagina.classList.add("header-claro");
     divCatalogo.classList.add("div-catalogo-claro");
 
-    btnesCategorias.forEach(boton => {
-      boton.classList.add("boton-claro");
-    });
-  };
+    btnesCategorias.forEach(boton => {boton.classList.add("boton-claro")})};
 });
 
 btnTemaClaro.addEventListener("click", (event) =>{
@@ -51,7 +49,8 @@ btnTemaClaro.addEventListener("click", (event) =>{
     card.classList.toggle("bg-light", !esClaro);
     card.classList.toggle("text-black", !esClaro);
   });
-  localStorage.setItem("tema", !esClaro ? "claro" : "oscuro");
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
 });
 
 btnCarrito.addEventListener("click", (event) =>{
@@ -149,8 +148,7 @@ function addJuego(juego){
         if(!juegoEnCarrito){
           juego.cantidad = 1;
           listCarrito.push(juego);
-        }
-        else{
+        }else{
           juegoEnCarrito.cantidad += 1;
         };
         localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
@@ -168,30 +166,21 @@ function addJuego(juego){
 
 function renderJuegos(datosJuegos){
     divContenedorDatos.innerHTML = "";
-    datosJuegos.forEach(juego => {
-        divContenedorDatos.appendChild(addJuego(juego));
-    });
+    datosJuegos.forEach(juego => {divContenedorDatos.appendChild(addJuego(juego))});
     cambiarTemaDeTarjetas();
 };
 
 function mostrarCantidadEnCarrito(){
   let cantidad = 0;
 
-  listCarrito.forEach(juego =>{
-    cantidad += juego.cantidad;
-  });
+  listCarrito.forEach(juego =>{cantidad += juego.cantidad});
   btnCarrito.textContent = `🛒 Carrito: ${cantidad}`;
 };
 
 async function initCliente(categoriaJuego) {
-  if (!divContenedorDatos){    
-    return;
-  };
   datos = await cargarDatosJuegos();
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
   mostrarCantidadEnCarrito();
 };
 
-let datos = [];
-let categoriaActual = "PS4";
 initCliente(categoriaActual);

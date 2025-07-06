@@ -48,15 +48,15 @@
         </div>
     </main>
     <!--------------------------------------------------------------------------------------------------------->
-    <div id="miModal" class="d-flex justify-content-center align-items-center">
-        <div class="contenido text-center">
-            <h5 class="mb-3">¿Deseás confirmar la compra?</h5>
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary" onclick="confirmar()">Sí, confirmar</button>
-                <button class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-            </div>
-        </div>
+    <div id="miModal" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+  <div class="contenido bg-white p-4 rounded shadow text-center">
+    <h5 class="mb-3 text-black">¿Deseás confirmar la compra?</h5>
+    <div class="d-grid gap-2">
+      <button id="btn-confirmar" class="btn btn-primary">Sí, confirmar</button>
+      <button id="btn-cancelar" class="btn btn-secondary">Cancelar</button>
     </div>
+  </div>
+</div>
     <!--------------------------------------------------------------------------------------------------------->
     <script src="/js/cliente/scriptCarrito.js"></script>
 </body>
