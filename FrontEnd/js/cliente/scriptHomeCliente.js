@@ -15,7 +15,7 @@ let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 
 btnCarrito.addEventListener("click", (event) =>{
   event.preventDefault();
-  window.location.href = "/htmlCliente/carrito.html";
+  window.location.href = "/carritoCliente";
 });
 
 btnPc.addEventListener("click", async (event) =>{

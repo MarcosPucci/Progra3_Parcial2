@@ -13,13 +13,13 @@ const sequelize = new Sequelize(database, user, password, {
 const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    console.log("✅ Database connection established successfully.");
+    console.log("Database connection established successfully.");
     
     await sequelize.sync({ alter: true });
-    console.log("✅ Database synchronized successfully.");
+    console.log(" Database synchronized successfully.");
     
   } catch (error) {
-    console.error("❌ Unable to connect to the database:", error.message);
+    console.error("Unable to connect to the database:", error.message);
     console.error("Verifica que:");
     console.error("1. MySQL esté corriendo");
     console.error("2. Las credenciales en .env sean correctas");

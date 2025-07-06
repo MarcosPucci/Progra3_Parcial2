@@ -18,10 +18,10 @@
       </div>
       <h2 id="login-text">- Login -</h2>
 
-      <!-- Formulario real que se envía al backend -->
-      <form id="form-login" action="/loginAdmin.ejs" method="POST">
+      <!-- Formulario que usa JavaScript para enviar a la API -->
+      <form id="form-login">
         <label for="email">Ingrese su email</label>
-        <input type="text" name="email" id="email" placeholder="ejemplo@gmail.com" required>
+        <input type="email" name="email" id="email" placeholder="ejemplo@gmail.com" required>
         <label for="password">Ingrese su contraseña:</label>
         <input type="password" name="password" id="password" placeholder="***************" required>
 
@@ -29,9 +29,7 @@
           <button type="submit" id="btn-login">Iniciar Sesión</button>
         </div>
 
-        <% if (error) { %>
-          <p style="color: red; margin-top: 10px; text-align: center;"><%= error %></p>
-        <% } %>
+        <div id="error-message" style="color: red; margin-top: 10px; text-align: center; display: none;"></div>
       </form>
     </div>
 
@@ -40,6 +38,51 @@
     </div>
   </main>
 
-  <script src="/FrontEnd/js/admin/scriptAdmin.js"></script>
+  <script>
+    document.getElementById('form-login').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const errorDiv = document.getElementById('error-message');
+      const submitBtn = document.getElementById('btn-login');
+      
+      // Limpiar mensaje de error anterior
+      errorDiv.style.display = 'none';
+      errorDiv.textContent = '';
+      
+      // Deshabilitar botón durante la petición
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Iniciando sesión...';
+      
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Login exitoso, redirigir al panel de admin
+          window.location.href = '/admin';
+        } else {
+          // Mostrar error
+          errorDiv.textContent = data.message || 'Error en el login';
+          errorDiv.style.display = 'block';
+        }
+      } catch (error) {
+        errorDiv.textContent = 'Error de conexión. Intenta nuevamente.';
+        errorDiv.style.display = 'block';
+      } finally {
+        // Restaurar botón
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Iniciar Sesión';
+      }
+    });
+  </script>
 </body>
 </html>

@@ -2,14 +2,14 @@ import express from "express"
 import path from "path"
 import url from "url"
 import cors from "cors"
+import session from "express-session"
 import sequelize from "./config/db-sequelize.js";
 import envs from "./config/envs.js";
 
 // Imports de las rutas
 import productRoutes from "./routes/products.route.js"
 import salesRoutes from "./routes/sales.route.js"
-//import authRoutes from "./routes/auth.route.js" -> crear modulo de atentificacion admins
-
+import authRoutes from "./routes/auth.route.js"
 
 //Inicio de servidor
 const app = express()
@@ -19,7 +19,7 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 //Config
-app.set('PORT', envs.port || 5000)
+app.set('PORT', envs.port || 3000)
 
 const incializeConnection = async () => {
   try {
@@ -35,16 +35,16 @@ app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+
+
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
 
-
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas
-/* app.use("/api/auth", authRoutes) */ // Rutas para autenticación
-
+app.use("/api/auth", authRoutes) // Rutas para autenticación
 
 // RUTAS PARA CLIENTES (página principal)
 app.get("/", (req, res) => {
@@ -52,21 +52,30 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "inicioCliente.html"))
 })
 
-
-app.get("/homeCliente.html", (req, res) => {
+app.get("/homeCliente", (req, res) => {
   // Ruta directa para acceder a homeCliente.html
   res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "homeCliente.html"))
 })
 
+app.get("/home-cliente", (req, res) => {
+  // Ruta alternativa con guión para acceder a homeCliente.html
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "homeCliente.html"))
+})
 
-app.get("/carritoCliente.html", (req, res) => {
+app.get("/carritoCliente", (req, res) => {
   // Ruta directa para acceder a carrito.html
   res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "carrito.html"))
 })
 
-app.get("/ticketCliente.html", (req, res) => {
+app.get("/ticketCliente", (req, res) => {
   // Ruta para mostrar el ticket de la venta
   res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "facturaCliente.html"))
+})
+
+// RUTAS PARA ADMIN
+app.get("/login-admin", (req, res) => {
+  // Ruta para el login del admin
+  res.sendFile(path.join(__dirname, "..","FrontEnd", "ejsAdmin", "loginAdmin.ejs"))
 })
 
 //RECORDATORIO: Faltan rutas del admin

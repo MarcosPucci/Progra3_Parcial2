@@ -7,6 +7,7 @@
     "start": "node ./BackEnd/server.js",
     "dev": "nodemon ./BackEnd/server.js",
     "seed": "node ./BackEnd/seed.js",
+    "create-admin": "node ./BackEnd/createAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,10 +15,12 @@
   "license": "ISC",
   "description": "Sistema de autoservicio para tienda de videojuegos",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.1",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
   },

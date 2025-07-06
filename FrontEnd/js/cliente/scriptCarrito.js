@@ -23,7 +23,7 @@ btnFinalizarCompra.addEventListener("click", (event) =>{
   .then(res => res.json())
   .then(data => {
     const ventaId = data.id; // ID de la venta guardada en la base
-    window.location.href = `/ticketCliente.html?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+    window.location.href = `/ticketCliente?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
   });
 });
 
