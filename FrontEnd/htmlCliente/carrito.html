@@ -10,15 +10,23 @@
     <title>Carrito</title>
 </head>
 <body class="body-pagina">
-    <header id="barra-menu">
-        <div id="icon-text">
-            <img src="/img/logo.png" alt="Logo" id="logo-menu">
-            <h1>Punto de Control</h1>
-        </div>
-        <div id="div-alumnos" class="text-center mx-4">
-            <p>Alumnos: Marcos | Marcos Pucci</p>
-        </div>
-    </header>
+      <header class="barra-menu d-flex flex-column px-4 py-2">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div></div>
+      <div id="icon-text" class="d-inline-flex align-items-center gap-2">
+        <img src="/img/logo.png" alt="Logo" id="logo-menu">
+        <h1 class="m-0">Punto de Control</h1>
+      </div>
+
+      <button class="boton-tema-pagina">
+        <img src="/img/sun.png" alt="">
+      </button>
+    </div>
+
+    <div id="div-alumnos" class="text-center mt-2 w-100">
+      <p>Alumnos: Marcos Fernandez | Marcos Pucci</p>
+    </div>
+  </header>
 
     <main class="main-pagina">
         <div id="div-btnes-home">
@@ -39,6 +47,17 @@
             </div>
         </div>
     </main>
+    <!--------------------------------------------------------------------------------------------------------->
+    <div id="miModal" class="d-none position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+  <div class="contenido bg-white p-4 rounded shadow text-center">
+    <h5 class="mb-3 text-black">¿Deseás confirmar la compra?</h5>
+    <div class="d-grid gap-2">
+      <button id="btn-confirmar" class="btn btn-primary">Sí, confirmar</button>
+      <button id="btn-cancelar" class="btn btn-secondary">Cancelar</button>
+    </div>
+  </div>
+</div>
+    <!--------------------------------------------------------------------------------------------------------->
     <script src="/js/cliente/scriptCarrito.js"></script>
 </body>
 </html>

@@ -6,14 +6,45 @@ const ulCarrito = document.getElementById("ul-carrito");
 const btnCarrito = document.getElementById("btn-carrito");
 const totalPagar = document.getElementById("total-pagar");
 const btnFinalizarCompra = document.getElementById("btn-finalizar-compra");
+const btnCamibarTema = document.getElementsByClassName("boton-tema-pagina")[0];
+
+const bodyPagina = document.getElementsByClassName("body-pagina")[0];
+const headerPagina = document.getElementsByClassName("barra-menu")[0];
+
 
 /*~~~~~~~~~~~~~ Variables a usar ~~~~~~~~~~~~~*/
 
 let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
+let tema = localStorage.getItem("tema") || "oscuro";
 
 /*~~~~~~~~~~~~~ Funciones del carrito ~~~~~~~~~~~~~*/
 
-btnFinalizarCompra.addEventListener("click", (event) =>{
+window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+  if (tema === "claro") {
+    bodyPagina.classList.add("body-claro");
+    headerPagina.classList.add("header-claro");
+  };
+});
+
+btnCamibarTema.addEventListener("click", (event) =>{
+  event.preventDefault();
+  const tarjetas = document.querySelectorAll(".tarjeta-juego");
+  const esClaro = bodyPagina.classList.contains("body-claro");
+
+  bodyPagina.classList.toggle("body-claro", !esClaro);
+  headerPagina.classList.toggle("header-claro", !esClaro);
+
+  tarjetas.forEach(card => {
+    card.classList.toggle("bg-black", esClaro);
+    card.classList.toggle("text-white", esClaro);
+    card.classList.toggle("bg-light", !esClaro);
+    card.classList.toggle("text-black", !esClaro);
+  });
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
+});
+
+btnFinalizarCompra.addEventListener("click", async (event) =>{
   event.preventDefault();
   fetch('/api/finalizarCompra', {
     method: 'POST',
@@ -29,10 +60,10 @@ btnFinalizarCompra.addEventListener("click", (event) =>{
 
 function addCarrito(juego) {
     const liContenedor = document.createElement("div");
-    liContenedor.className = "list-group-item d-flex flex-column flex-sm-row align-items-center m-1 gap-3";
+    liContenedor.className = "list-group-item d-flex flex-column flex-sm-row align-items-center m-1 gap-3 tarjeta-juego";
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = "/img/ghost.jpg";
+    imgJuego.src = `/${juego.img}`;
     imgJuego.alt = `Juego de: ${juego.titulo}`;
     imgJuego.className = "rounded";
     imgJuego.style.width = "100px";
@@ -48,7 +79,7 @@ function addCarrito(juego) {
 
     const spanPrecio = document.createElement("span");
     spanPrecio.innerText = `Precio x ${juego.cantidad}: $${(juego.precio * juego.cantidad)}`;
-    spanPrecio.className = "text-muted mb-2";
+    spanPrecio.className = "text-white mb-2 tarjeta-juego";
 
     const btnBorrar = document.createElement("button");
     btnBorrar.textContent = "🗑️ Borrar";
@@ -116,6 +147,7 @@ function renderCarrito(juegosEnCarrito){
     mostrarCantidadEnCarrito();
     totalPagar.innerHTML = "";
     totalPagar.innerHTML = mostrarTotalPagar()
+    cambiarTemaDeTarjetas();
 };
 
 function mostrarCantidadEnCarrito(){

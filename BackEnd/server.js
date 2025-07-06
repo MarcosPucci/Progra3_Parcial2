@@ -41,6 +41,7 @@ app.use(express.urlencoded({ extended: true }))
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
 
+
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas

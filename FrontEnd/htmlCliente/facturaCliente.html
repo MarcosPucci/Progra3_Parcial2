@@ -10,35 +10,42 @@
   <title>Tienda de Juegos</title>
 </head>
 <body class="body-pagina">
-  <header class="barra-menu">
-    <div id="icon-text">
-      <img src="/img/logo.png" alt="Logo" id="logo-menu">
-      <h1>Punto de Control</h1>
+    <header class="barra-menu d-flex flex-column px-4 py-2">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div></div>
+      <div id="icon-text" class="d-inline-flex align-items-center gap-2">
+        <img src="/img/logo.png" alt="Logo" id="logo-menu">
+        <h1 class="m-0">Punto de Control</h1>
+      </div>
+
+      <button class="boton-tema-pagina">
+        <img src="/img/sun.png" alt="">
+      </button>
     </div>
-    <div id="div-alumnos" class="text-center mx-4">
+
+    <div id="div-alumnos" class="text-center mt-2 w-100">
       <p>Alumnos: Marcos Fernandez | Marcos Pucci</p>
     </div>
   </header>
 
     <div id="div-btnes-home">
-      <button id="btn-home" onclick="window.location.href='homeCliente.html'">🎮 Home</button>
-      <button id="btn-carrito" onclick="window.location.href='carrito.html'">🛒 Carrito: 0</button>
+      <button id="btn-lobby" class="btn btn-danger p-4" onclick="window.location.href='/'">Salir</button>
     </div>
 
     <div class="container my-5">
-        <div class="card mx-auto bg-black">
-            <div class="card-body">
-                <h5 class="card-title text-center text-white">Punto de control</h5>
-                <p class="mb-1 text-white"><strong id="fecha-id"><!--Insertar dinamicamente--></strong></p>
-                <p class="mb-3 text-white"><strong id="numero-ticket"><!--Insertar dinamicamente--></strong></p>
-                <p class="mb-3 text-white"><strong id="nombre-cliente"><!--Insertar dinamicamente--></strong></p>
+        <div class="card mx-auto">
+            <div class="card-body div-container-factura">
+                <h5 class="card-title text-center tarjeta-texto">Punto de control</h5>
+                <p class="mb-1 tarjeta-texto"><strong id="fecha-id"><!--Insertar dinamicamente--></strong></p>
+                <p class="mb-3 tarjeta-texto"><strong id="numero-ticket"><!--Insertar dinamicamente--></strong></p>
+                <p class="mb-3 tarjeta-texto"><strong id="nombre-cliente"><!--Insertar dinamicamente--></strong></p>
 
-                <table class="table text-center table-dark">
+                <table class="table text-center tarjeta-juego tarjeta-texto">
                     <thead>
                         <tr>
-                        <th class="text-white">Juego</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
+                        <th class="tarjeta-juego tarjeta-texto">Juego</th>
+                        <th class="tarjeta-juego tarjeta-texto">Cantidad</th>
+                        <th class="tarjeta-juego tarjeta-texto">Precio</th>
                         </tr>
                     </thead>
                     <tbody id="tbody-table">
@@ -51,11 +58,11 @@
                 </table>
 
                 <div class="d-flex justify-content-end text-white">
-                    <strong id="total-factura"><!--Insertar dinamicamente--></strong>
+                    <strong id="total-factura" class="tarjeta-texto"><!--Insertar dinamicamente--></strong>
                 </div>
 
-                <p class="text-center small mb-0 text-white">¡Gracias por su compra!</p>
-                <p class="text-center small text-white">http://localhost:5000/</p>
+                <p class="text-center small mb-0 tarjeta-texto">¡Gracias por su compra!</p>
+                <button class="btn btn-danger" id="btn-salir">Salir al menú</button>
             </div>
         </div>
   </div>

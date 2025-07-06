@@ -7,5 +7,5 @@ btnIngresar.addEventListener("click", (event) =>{
         return;
     };
     localStorage.setItem("nombreCliente", nombreIngresadoCliente);
-    window.location.href = "/home-cliente";
+    window.location.href = "/homeCliente.html";
 });

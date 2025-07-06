@@ -18,16 +18,12 @@ const Juego = sequelize.define("Juego", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  anioDeSalida: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
   categoria: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   precio: {
-    type: DataTypes.DECIMAL(10, 2), //10 numeros totales, 2 despues de la coma
+    type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
   },
   descripcion: {
@@ -48,6 +44,10 @@ const Juego = sequelize.define("Juego", {
     defaultValue: 1,
     allowNull: false,
   },
+}, {
+  tableName: "juegos",
+  timestamps: false
 });
+
 
 export default Juego;
