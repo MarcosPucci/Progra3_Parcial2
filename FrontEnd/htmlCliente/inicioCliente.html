@@ -9,22 +9,28 @@
     crossorigin="anonymous">
     <title>Inicio</title>
 </head>
-<body class="bg-black">
+<body class="body-pagina">
     <div class="container d-flex flex-column justify-content-center align-items-center inicio-container text-center">
-    <img src="../img/logo.png" alt="Logo" id="img-logo" class="mt-4">
+      <div class="w-100 pt-3 d-flex justify-content-end">
+        <button class="boton-tema-pagina">
+          <img src="/img/sun.png" alt="">
+        </button>
+      </div>
+      <img src="../img/logo.png" alt="Logo" id="img-logo" class="mt-4">
 
-    <h1 class="mb-4 text-white">Punto de Control</h1>
+      <h1 class="mb-4 text-titulo">Punto de Control</h1>
+      <p id="text-alumnos">Alumnos: Marcos Fernandez | Marcos Pucci</p>
+      <!-- Input del nombre -->
+      <div class="mb-3 d-flex justify-content-center w-100">
+        <form action="/homeCliente" method="get" style="width: 100%; max-width: 400px;">
+          <input type="text" id="nombre-cliente" class="form-control form-control-lg text-center" placeholder="Ingresá tu nombre">
+        </form>
+      </div>
 
-    <!-- Input del nombre -->
-    <div class="mb-3 w-100">
-      <form action="/homeCliente.html" method="get">
-        <input type="text" id="nombre-cliente" class="form-control form-control-lg text-center" placeholder="Ingresá tu nombre">
-      </form>
+      <!-- Botón opcional para continuar -->
+      <button class="btn btn-success btn-lg" id="btn-ingresar">Ingresar</button>
     </div>
-
-    <!-- Botón opcional para continuar -->
-    <button class="btn btn-outline-light btn-lg" id="btn-ingresar">Ingresar</button>
-  </div>
-  <script src="../js/cliente/scriptLogin.js"></script>
-</body>
+    
+    <script src="../js/cliente/scriptLogin.js"></script>
+  </body>
 </html>

@@ -14,7 +14,7 @@ const divFactura = document.getElementsByClassName("div-container-factura")[0];
 /*================================ Variables a usar ======================================*/
 let nombre = localStorage.getItem("nombreCliente");
 let juegosComprados = JSON.parse(localStorage.getItem("listCarrito"));
-const tema = localStorage.getItem("tema");
+let tema = localStorage.getItem("tema") || "oscuro";
 
 /*========================================================================================*/
 

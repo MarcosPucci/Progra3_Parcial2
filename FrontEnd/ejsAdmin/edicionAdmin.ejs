@@ -10,15 +10,23 @@
     <title>Document</title>
 </head>
 <body class="body-pagina">
-    <header class="barra-menu">
-        <div id="icon-text">
-            <img src="/static/img/logo.png" alt="Logo" id="logo-menu">
-            <h1>Punto de Control</h1>
-        </div>
-        <div class="text-center mx-4">
-            <p>Alumnos: Marcos Fernandez | Marcos Pucci</p>
-        </div>
-    </header>
+    <header class="barra-menu d-flex flex-column px-4 py-2">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <div></div>
+      <div id="icon-text" class="d-inline-flex align-items-center gap-2">
+        <img src="../img/logo.png" alt="Logo" id="logo-menu">
+        <h1 class="m-0">Punto de Control</h1>
+      </div>
+
+      <button class="boton-tema-pagina">
+        <img src="/FrontEnd/img/logo.png" alt="">
+      </button>
+    </div>
+
+    <div id="div-alumnos" class="text-center mt-2 w-100">
+      <p>Alumnos: Marcos Fernandez | Marcos Pucci</p>
+    </div>
+  </header>
 
   <div id="div-btnes-home">
     <button id="btn-home" onclick="window.location.href='/'">🎮 Home</button>

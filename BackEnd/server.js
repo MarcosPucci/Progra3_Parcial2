@@ -40,7 +40,7 @@ app.use(express.urlencoded({ extended: true }))
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos

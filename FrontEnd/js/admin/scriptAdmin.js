@@ -174,7 +174,6 @@ function renderJuegos(datosJuegos){
 async function initCliente() {
   let datos = await cargarDatosJuegosPlay();
   renderJuegos(datos);
-  mostrarCantidadEnCarrito();
 };
 
 initCliente();

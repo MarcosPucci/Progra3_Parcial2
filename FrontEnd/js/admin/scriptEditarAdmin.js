@@ -1,5 +1,16 @@
+const bodyPagina = document.getElementsByClassName("body-pagina")[0];
+const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
+const headerPagina = document.getElementsByClassName("barra-menu")[0];
+
+let tema = localStorage.getItem("tema") || "oscuro";
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
+
+window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+  if (tema === "claro") {
+    bodyPagina.classList.add("body-claro");
+    headerPagina.classList.add("header-claro");
+}});
 
 if (id) {
   fetch(`/api/productos/${id}`)
@@ -10,7 +21,7 @@ if (id) {
       document.getElementById('descripcionJuego').value = data.descripcion;
     })
     .catch(err => {
-      console.error('Error al cargar el producto:', err);
+      console.error('Error al cargar el producto. Error:', err);
       alert('No se pudo cargar el producto para editar');
     });
 }

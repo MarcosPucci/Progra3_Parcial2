@@ -46,17 +46,57 @@ btnCamibarTema.addEventListener("click", (event) =>{
 
 btnFinalizarCompra.addEventListener("click", async (event) =>{
   event.preventDefault();
-  fetch('/api/finalizarCompra', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(listCarrito)
-  })
-  .then(res => res.json())
-  .then(data => {
-    const ventaId = data.id; // ID de la venta guardada en la base
-    window.location.href = `/ticketCliente?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+  if(listCarrito.length > 0){
+    const respuesta = await mostrarModalConfirmacion();
+
+    if (respuesta) {
+      fetch('/api/finalizarCompra', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(listCarrito)
+      })
+      .then(res => res.json())
+      .then(data => {
+        const ventaId = data.id; // ID de la venta guardada en la base
+        window.location.href = `/ticketCliente?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
+      });
+    };
+  }else{
+    alert("No ingresó ningun producto.")
+  }});
+
+function mostrarModalConfirmacion() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("miModal");
+    modal.classList.remove("d-none");
+
+    const btnConfirmar = modal.querySelector("#btn-confirmar");
+    const btnCancelar = modal.querySelector("#btn-cancelar");
+
+    btnConfirmar.onclick = () => {
+      modal.classList.add("d-none");
+      resolve(true);
+    };
+
+    btnCancelar.onclick = () => {
+      modal.classList.add("d-none");
+      resolve(false);
+    };
   });
-});
+};
+
+function cambiarTemaDeTarjetas(){
+  const tarjetas = document.querySelectorAll(".tarjeta-juego");
+
+  tarjetas.forEach(card => {
+    card.classList.remove("bg-black", "text-white", "bg-light", "text-black");
+    if (tema === "oscuro") {
+      card.classList.add("bg-black", "text-white");
+    } else {
+      card.classList.add("bg-light", "text-black");
+    }
+  });
+};
 
 function addCarrito(juego) {
     const liContenedor = document.createElement("div");
