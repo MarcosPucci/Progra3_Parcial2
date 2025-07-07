@@ -40,12 +40,21 @@ app.use(express.urlencoded({ extended: true }))
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Configuración específica para /static/ - mapea /static/ a la carpeta FrontEnd/
+app.use('/static', express.static(path.join(__dirname, '..', 'FrontEnd')));
+
+// Middleware específico para servir archivos CSS, JS, imágenes y videos
+app.use('/FrontEnd/css', express.static(path.join(__dirname, '..', 'FrontEnd', 'css')));
+app.use('/FrontEnd/js', express.static(path.join(__dirname, '..', 'FrontEnd', 'js')));
+app.use('/FrontEnd/img', express.static(path.join(__dirname, '..', 'FrontEnd', 'img')));
+app.use('/FrontEnd/json', express.static(path.join(__dirname, '..', 'FrontEnd', 'json')));
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/products", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas
 app.use("/api/auth", authRoutes) // Rutas para autenticación
+
 
 // RUTAS PARA CLIENTES (página principal)
 app.get("/", (req, res) => {
@@ -73,13 +82,30 @@ app.get("/ticketCliente", (req, res) => {
   res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "facturaCliente.html"))
 })
 
+// Configurar EJS como motor de vistas
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '..', 'FrontEnd', 'ejsAdmin'));
+
 // RUTAS PARA ADMIN
 app.get("/login-admin", (req, res) => {
   // Ruta para el login del admin
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "ejsAdmin", "loginAdmin.ejs"))
+  res.render("loginAdmin")
 })
 
-//RECORDATORIO: Faltan rutas del admin
+app.get("/admin", (req, res) => {
+  // Ruta para el panel principal del admin
+  res.render("homeAdmin")
+})
+
+app.get("/admin/editar", (req, res) => {
+  // Ruta para editar productos
+  res.render("edicionAdmin")
+})
+
+app.get("/edicion-admin", (req, res) => {
+  // Ruta alternativa para editar productos
+  res.render("edicionAdmin")
+})
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
 app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.

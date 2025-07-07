@@ -20,14 +20,6 @@ const Admin = sequelize.define("Admin", {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
-  nombre: {
-    type: DataTypes.STRING(100),
-    allowNull: false,
-  },
-  activo: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-  },
 }, {
   timestamps: true,
   hooks: {

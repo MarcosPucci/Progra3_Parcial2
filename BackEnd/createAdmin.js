@@ -10,8 +10,7 @@ const createFirstAdmin = async () => {
     // Datos del primer admin
     const adminData = {
       email: "admin@puntocontrol.com",
-      password: "admin123",
-      nombre: "Administrador Principal"
+      password: "admin123"
     };
 
     // Crear el admin
@@ -19,7 +18,6 @@ const createFirstAdmin = async () => {
     
     console.log("Admin creado exitosamente:");
     console.log(`   Email: ${admin.email}`);
-    console.log(`   Nombre: ${admin.nombre}`);
     console.log(`   ID: ${admin.id}`);
     console.log("\n Credenciales de acceso:");
     console.log(`   Email: ${adminData.email}`);

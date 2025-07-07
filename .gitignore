@@ -1,1 +1,4 @@
 node_modules
+createAdmin.js
+.env
+seed.js

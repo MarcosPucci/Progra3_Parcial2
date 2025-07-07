@@ -7,8 +7,7 @@ const authService = {
       // Buscar admin por email
       const admin = await Admin.findOne({
         where: { 
-          email: email,
-          activo: true 
+          email: email
         }
       });
 
