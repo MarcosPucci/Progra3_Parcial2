@@ -2,7 +2,6 @@ import express from "express"
 import path from "path"
 import url from "url"
 import cors from "cors"
-import session from "express-session"
 import sequelize from "./config/db-sequelize.js";
 import envs from "./config/envs.js";
 
@@ -37,12 +36,17 @@ app.use(express.urlencoded({ extended: true }))
 
 
 
+
+
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
 
 // Configuración específica para /static/ - mapea /static/ a la carpeta FrontEnd/
 app.use('/static', express.static(path.join(__dirname, '..', 'FrontEnd')));
+
+// Servir archivos de la carpeta public del BackEnd
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 // Middleware específico para servir archivos CSS, JS, imágenes y videos
 app.use('/FrontEnd/css', express.static(path.join(__dirname, '..', 'FrontEnd', 'css')));
@@ -51,7 +55,7 @@ app.use('/FrontEnd/img', express.static(path.join(__dirname, '..', 'FrontEnd', '
 app.use('/FrontEnd/json', express.static(path.join(__dirname, '..', 'FrontEnd', 'json')));
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
-app.use("/api/products", productRoutes) // Rutas para productos
+app.use("/api/productos", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas
 app.use("/api/auth", authRoutes) // Rutas para autenticación
 
@@ -84,7 +88,7 @@ app.get("/ticketCliente", (req, res) => {
 
 // Configurar EJS como motor de vistas
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '..', 'FrontEnd', 'ejsAdmin'));
+app.set('views', path.join(__dirname, '..', 'FrontEnd', 'views'));
 
 // RUTAS PARA ADMIN
 app.get("/login-admin", (req, res) => {
