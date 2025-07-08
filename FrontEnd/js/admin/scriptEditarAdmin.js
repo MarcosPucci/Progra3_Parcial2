@@ -16,9 +16,11 @@ if (id) {
   fetch(`/api/productos/${id}`)
     .then(res => res.json())
     .then(data => {
-      document.getElementById('nombreJuego').value = data.titulo;
-      document.getElementById('precioJuego').value = data.precio;
-      document.getElementById('descripcionJuego').value = data.descripcion;
+      const producto = data.data; 
+
+    document.getElementById('nombreJuego').value = producto.titulo;
+    document.getElementById('precioJuego').value = producto.precio;
+    document.getElementById('descripcionJuego').value = producto.descripcion;
     })
     .catch(err => {
       console.error('Error al cargar el producto. Error:', err);
@@ -29,8 +31,13 @@ if (id) {
 document.getElementById('formEdit').addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const form = e.target; // El formulario completo
-  const formData = new FormData(form); // Crea objeto FormData con todos los datos del form
+  const form = e.target;
+
+  const producto = {
+    titulo: form.nombreJuego.value,
+    precio: parseFloat(form.precioJuego.value),
+    descripcion: form.descripcionJuego.value
+  };
 
   try {
     let url = '/api/productos';
@@ -40,18 +47,22 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
       url = `/api/productos/${id}`;
       methodProducto = 'PUT';
     }
+
     const response = await fetch(url, {
       method: methodProducto,
-      body: formData
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(producto)
     });
 
+    const data = await response.json();
+
     if (response.ok) {
-      const data = await response.json();
       alert(data.mensaje);
       form.reset();
     } else {
-      const errorData = await response.json();
-      alert(errorData.error || 'Error al guardar el producto');
+      alert(data.error || 'Error al guardar el producto');
     }
   } catch (err) {
     console.error('Error:', err);

@@ -179,6 +179,8 @@ function mostrarCantidadEnCarrito(){
 
 async function initCliente(categoriaJuego) {
   datos = await cargarDatosJuegos();
+  console.log(datos);
+  
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
   mostrarCantidadEnCarrito();
 };
