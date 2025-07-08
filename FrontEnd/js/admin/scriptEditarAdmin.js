@@ -24,7 +24,7 @@ if (id) {
       console.error('Error al cargar el producto. Error:', err);
       alert('No se pudo cargar el producto para editar');
     });
-}
+};
 
 document.getElementById('formEdit').addEventListener('submit', async (e) => {
   e.preventDefault();
