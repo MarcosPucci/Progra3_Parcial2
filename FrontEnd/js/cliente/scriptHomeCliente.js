@@ -105,7 +105,7 @@ function cambiarTemaDeTarjetas() {
 };
 
 function cargarDatosJuegos() {
-  return fetch("/api/products/")
+  return fetch("/api/productos/")
     .then(res => res.json())
     .then(res => res.data.filter(juego => juego.activo))
     .catch(err => {
@@ -122,7 +122,7 @@ function addJuego(juego){
     divCard.className = "card bg-black tarjeta-juego"; //Clase de bootstrap para dar formato a la presentacion del juego
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = `/${juego.img}`;
+    imgJuego.src = `/static/${juego.img}`;
     
     imgJuego.alt = `Juego de: ${juego.titulo}`;
 
@@ -179,7 +179,6 @@ function mostrarCantidadEnCarrito(){
 
 async function initCliente(categoriaJuego) {
   datos = await cargarDatosJuegos();
-  console.log(datos);
   
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
   mostrarCantidadEnCarrito();

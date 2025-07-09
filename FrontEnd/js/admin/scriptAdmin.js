@@ -2,9 +2,28 @@ const divContenedorDatos = document.getElementById("div-contenedor");
 const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
 const bodyPagina = document.getElementsByClassName("body-pagina")[0];
 const headerPagina = document.getElementsByClassName("barra-menu")[0];
+const inputBuscar = document.getElementById("input-buscar");
 const divCatalogo = document.getElementsByClassName("div-catalogo")[0];
 const btnesCategorias = document.querySelectorAll(".btn-categorias");
+const btnPc = document.getElementById("btn-pc");
+const btnPlay = document.getElementById("btn-play");
 const btnAgregar = document.getElementById("btn-agregar-p");
+
+let categoriaActual = "PS4";
+let tema = localStorage.getItem("tema") || "oscuro";
+let datos = [];
+
+btnPc.addEventListener("click", async (event) =>{
+  event.preventDefault();
+  categoriaActual = "PC";
+  initCliente(categoriaActual);
+});
+
+btnPlay.addEventListener("click", async (event) =>{
+  event.preventDefault();
+  categoriaActual = "PS4"
+  initCliente(categoriaActual);
+});
 
 btnAgregar.addEventListener("click", (event) =>{
   event.preventDefault();
@@ -41,20 +60,30 @@ window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuand
   }
 });
 
-function cargarDatosJuegosPlay() {
-  return fetch("/static/json/juegos.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
-    .then(res => res.json())
-    .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
-    .catch(err => {
-      console.error("Error:", err);
-      return [];
-    });
+inputBuscar.addEventListener("keyup", (event) =>{
+  event.preventDefault();
+  const texto = event.target.value;
+  const juegosFiltrados = buscarNombreJuego(texto);
+  renderJuegos(juegosFiltrados);
+
+});
+
+function buscarNombreJuego(texto) {
+  let nuevosDatos = datos.filter(j => j.categoria === categoriaActual && j.titulo.toLowerCase().includes(texto.toLowerCase()));
+
+  return nuevosDatos;
 };
 
-function cargarDatosJuegosPc() {
-  return fetch("/static/json/juegosPc.json") //Devuelvo la lista filtrada, si es que la promesa no tiene erroes
+function filtarJuegoCategoria(categoriaJuego){
+  let datosFiltrados = datos.filter(j => j.categoria === categoriaJuego);
+
+  return datosFiltrados;
+};
+
+function cargarDatosJuegos() {
+  return fetch("/api/products/")
     .then(res => res.json())
-    .then(datosJuegos => datosJuegos.filter(juego => juego.activo))
+    .then(res => res.data)
     .catch(err => {
       console.error("Error:", err);
       return [];
@@ -171,9 +200,9 @@ function renderJuegos(datosJuegos){
     });
 };
 
-async function initCliente() {
-  let datos = await cargarDatosJuegosPlay();
-  renderJuegos(datos);
+async function initCliente(categoriaJuego) {
+  let datos = await cargarDatosJuegos();
+  renderJuegos(filtarJuegoCategoria(categoriaJuego));
 };
 
-initCliente();
+initCliente(categoriaActual);
