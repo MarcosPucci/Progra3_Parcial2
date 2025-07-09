@@ -1,10 +1,39 @@
 const bodyPagina = document.getElementsByClassName("body-pagina")[0];
 const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
 const headerPagina = document.getElementsByClassName("barra-menu")[0];
+const btnAgregarGenero = document.getElementById("btnAgregarCategoria");
+const listaCategorias = document.getElementById("listaCategorias");
+
+btnAgregarGenero.addEventListener("click", (e) =>{
+  e.preventDefault();
+  if(document.getElementById("generoInput").value != ""){
+    const li = document.createElement("li");
+    li.textContent = document.getElementById("generoInput").value;
+    generoJuego.push(document.getElementById("generoInput").value);
+    document.getElementById("generoInput").value = "";
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+  
+    const btnEliminar = document.createElement("button");
+    btnEliminar.className = "btn btn-sm btn-danger";
+    btnEliminar.textContent = "Eliminar";
+    btnEliminar.addEventListener("click", (e) =>{
+      e.preventDefault();
+      generoJuego.splice(1);
+      li.remove();
+    });
+  
+    li.appendChild(btnEliminar);
+    listaCategorias.appendChild(li);
+  }
+  else{
+    alert("No ingresó ningun genero")
+  };
+});
 
 let tema = localStorage.getItem("tema") || "oscuro";
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
+let generoJuego = [];
 
 window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
   if (tema === "claro") {
@@ -17,26 +46,32 @@ if (id) {
     .then(res => res.json())
     .then(data => {
       const producto = data.data; 
-      const listaCategorias = document.getElementById("listaCategorias");
 
       document.getElementById('nombreJuego').value = producto.titulo;
       document.getElementById('precioJuego').value = producto.precio;
       document.getElementById('descripcionJuego').value = producto.descripcion;
+      document.getElementById("categoriaJuego").value = producto.categoria;
+      console.log(producto.categoria);
+      
 
-      let generos = [];
+      generoJuego = JSON.parse(producto.genero);
 
-      // Asegurar que siempre sea un array
-      if (Array.isArray(producto.genero)) {
-        generos = producto.genero;
-      }
-      // } else if (typeof producto.genero === "string") {
-      //   generos = [producto.genero]; // lo convierte en array
-      // }
-
-      generos.forEach(g => {
+      generoJuego.forEach((g, index) => {
         const li = document.createElement("li");
         li.textContent = g;
-        li.className = "list-group-item";
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.className = "btn btn-sm btn-danger";
+        btnEliminar.textContent = "Eliminar";
+
+        btnEliminar.addEventListener("click", (e) =>{
+          e.preventDefault();
+          generoJuego.splice(index, 1);
+          li.remove();
+        });
+
+        li.appendChild(btnEliminar);
         listaCategorias.appendChild(li);
       });
     })
@@ -53,9 +88,21 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
 
   const producto = {
     titulo: form.nombreJuego.value,
+    genero: JSON.stringify(generoJuego),
     precio: parseFloat(form.precioJuego.value),
-    descripcion: form.descripcionJuego.value
+    descripcion: form.descripcionJuego.value,
+    categoria: form.categoriaJuego.value,
+    img: ""
   };
+
+  const inputImagen = document.getElementById("imagenJuego");
+
+  if (inputImagen.files.length > 0) {
+    producto.img = inputImagen.files[0].name;
+  } else if (id) {
+  const productoViejo = await fetch(`/api/productos/${id}`).then(r => r.json());
+  producto.img = productoViejo.data.img;
+}
 
   try {
     let url = '/api/productos';
