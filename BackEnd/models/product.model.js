@@ -15,7 +15,7 @@ const Juego = sequelize.define("Juego", {
     allowNull: false,
   },
   genero: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   categoria: {

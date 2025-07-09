@@ -286,3 +286,6 @@ form input {
 table{
     border: none;
 }
+.input-group .btn {
+  height: 100%;
+}

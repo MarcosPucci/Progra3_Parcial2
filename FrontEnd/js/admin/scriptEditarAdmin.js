@@ -17,10 +17,28 @@ if (id) {
     .then(res => res.json())
     .then(data => {
       const producto = data.data; 
+      const listaCategorias = document.getElementById("listaCategorias");
 
-    document.getElementById('nombreJuego').value = producto.titulo;
-    document.getElementById('precioJuego').value = producto.precio;
-    document.getElementById('descripcionJuego').value = producto.descripcion;
+      document.getElementById('nombreJuego').value = producto.titulo;
+      document.getElementById('precioJuego').value = producto.precio;
+      document.getElementById('descripcionJuego').value = producto.descripcion;
+
+      let generos = [];
+
+      // Asegurar que siempre sea un array
+      if (Array.isArray(producto.genero)) {
+        generos = producto.genero;
+      }
+      // } else if (typeof producto.genero === "string") {
+      //   generos = [producto.genero]; // lo convierte en array
+      // }
+
+      generos.forEach(g => {
+        const li = document.createElement("li");
+        li.textContent = g;
+        li.className = "list-group-item";
+        listaCategorias.appendChild(li);
+      });
     })
     .catch(err => {
       console.error('Error al cargar el producto. Error:', err);

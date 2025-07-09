@@ -48,6 +48,26 @@
         <input type="text" id="nombreJuego" name="nombre" placeholder="GTA V..." required>
       </div>
 
+      <!-- Categoria -->
+      <div class="">
+        <label for="categoriaJuego" class="fw-bold fs-5 text-center d-block mb-2">Categoría del juego</label>
+        <select id="categoriaJuego" name="categoria" class="form-select" required>
+          <option value="" disabled selected>Seleccioná una categoría</option>
+          <option value="accion">PS4</option>
+          <option value="aventura">PC</option>
+        </select>
+      </div>
+      
+      <div class="mb-3">
+        <label for="generoInput" class="fw-bold fs-5 d-block mb-2 text-center">Agregar generos</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Nuevo Genero" id="generoInput" />
+          <button class="btn btn-primary" id="btnAgregarCategoria" type="button">Agregar</button>
+        </div>
+      </div>
+
+    <ul id="listaCategorias" class="list-group"></ul>
+
       <!-- Precio -->
       <div class="">
         <label for="precioJuego" class="fw-bold fs-5 text-center">Precio</label>
