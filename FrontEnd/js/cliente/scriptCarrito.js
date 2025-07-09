@@ -50,13 +50,16 @@ btnFinalizarCompra.addEventListener("click", async (event) =>{
     const respuesta = await mostrarModalConfirmacion();
 
     if (respuesta) {
+      const datosCompra = {nombre: localStorage.getItem("nombreCliente"), productos: listCarrito};
       fetch('/api/finalizarCompra', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(listCarrito)
+        body: JSON.stringify(datosCompra)
       })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
+        
         const ventaId = data.id; // ID de la venta guardada en la base
         window.location.href = `/ticketCliente?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
       });

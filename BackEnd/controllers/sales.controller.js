@@ -7,7 +7,7 @@ const salesController = {
   // POST /api/finalizar-compra - Finalizar una compra
   async finalizarCompra(req, res) {
     try {
-      const productos = req.body; // Array de productos del carrito
+      const {nombre, productos} = req.body; // Array de productos del carrito
 
       // Validaciones básicas
       if (!productos || !Array.isArray(productos) || productos.length === 0) {
@@ -27,12 +27,13 @@ const salesController = {
         }
       }
 
-      const nuevaVenta = await salesService.finalizarCompra(productos);
+      const nuevaVenta = await salesService.finalizarCompra(nombre, productos);
 
       res.status(201).json({
         success: true,
         data: {
           id: nuevaVenta.id,
+          nombre: nuevaVenta.nombre,
           total: nuevaVenta.total,
           cantidadProductos: nuevaVenta.cantidadProductos,
           fecha: nuevaVenta.fecha

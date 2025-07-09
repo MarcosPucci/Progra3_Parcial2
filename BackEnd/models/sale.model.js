@@ -10,6 +10,10 @@ const Venta = sequelize.define("Venta", {
     primaryKey: true,
     allowNull: false,
   },
+  nombre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   fecha: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,

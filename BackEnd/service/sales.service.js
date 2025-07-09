@@ -5,7 +5,7 @@ import Venta from "../models/sale.model.js";
 
 const salesService = {
     // Finalizar una compra
-    async finalizarCompra(productos) {
+    async finalizarCompra(nombre, productos) {
         try {
             // Calcular el total de la venta
             const total = productos.reduce((sum, producto) => {
@@ -19,6 +19,7 @@ const salesService = {
 
             // Crear la venta en la base de datos
             const nuevaVenta = await Venta.create({
+                nombre: nombre,
                 total: total,
                 cantidadProductos: cantidadProductos,
                 productos: JSON.stringify(productos), // Guardar productos como JSON string
