@@ -4,6 +4,41 @@ const headerPagina = document.getElementsByClassName("barra-menu")[0];
 const btnAgregarGenero = document.getElementById("btnAgregarCategoria");
 const listaCategorias = document.getElementById("listaCategorias");
 
+window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+  const tema = localStorage.getItem("tema");
+  if (tema === "claro") {
+    bodyPagina.classList.add("body-claro");
+    headerPagina.classList.add("header-claro");
+    divCatalogo.classList.add("div-catalogo-claro");
+
+    btnesCategorias.forEach(boton => {
+      boton.classList.add("boton-claro");
+    });
+  }
+});
+
+btnCambiarTema.addEventListener("click", (event) => {
+  event.preventDefault();
+  const textos = document.querySelectorAll(".tarjeta-juego");
+  const esClaro = bodyPagina.classList.contains("body-claro");
+
+  bodyPagina.classList.toggle("body-claro", !esClaro);
+  headerPagina.classList.toggle("header-claro", !esClaro);
+  divCatalogo.classList.toggle("div-catalogo-claro", !esClaro);
+
+  btnesCategorias.forEach(boton => {
+    boton.classList.toggle("boton-claro", !esClaro);
+  });
+  textos.forEach(texto => {
+    texto.classList.toggle("bg-black", esClaro);
+    texto.classList.toggle("text-white", esClaro);
+    texto.classList.toggle("bg-light", !esClaro);
+    texto.classList.toggle("text-black", !esClaro);
+  });
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
+});
+
 btnAgregarGenero.addEventListener("click", (e) =>{
   e.preventDefault();
   if(document.getElementById("generoInput").value != ""){

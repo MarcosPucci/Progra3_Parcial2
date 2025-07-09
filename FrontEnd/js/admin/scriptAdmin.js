@@ -32,7 +32,7 @@ btnAgregar.addEventListener("click", (event) =>{
 
 btnCambiarTema.addEventListener("click", (event) => {
   event.preventDefault();
-
+  const tarjetas = document.querySelectorAll(".tarjeta-juego");
   const esClaro = bodyPagina.classList.contains("body-claro");
 
   bodyPagina.classList.toggle("body-claro", !esClaro);
@@ -42,9 +42,14 @@ btnCambiarTema.addEventListener("click", (event) => {
   btnesCategorias.forEach(boton => {
     boton.classList.toggle("boton-claro", !esClaro);
   });
-
-  localStorage.setItem("tema", !esClaro ? "claro" : "oscuro");
-
+  tarjetas.forEach(card => {
+    card.classList.toggle("bg-black", esClaro);
+    card.classList.toggle("text-white", esClaro);
+    card.classList.toggle("bg-light", !esClaro);
+    card.classList.toggle("text-black", !esClaro);
+  });
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
 });
 
 window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
@@ -90,12 +95,26 @@ function cargarDatosJuegos() {
     });
 };
 
+function cambiarTemaDeTarjetas() {
+  const tarjetas = document.querySelectorAll(".tarjeta-juego");
+
+  tarjetas.forEach(card => {
+    card.classList.remove("bg-black", "text-white", "bg-light", "text-black");
+
+    if (tema === "oscuro") {
+      card.classList.add("bg-black", "text-white");
+    } else {
+      card.classList.add("bg-light", "text-black");
+    }
+  });
+};
+
 function addJuego(juego){
     const divContenedorDeCard = document.createElement("div");
     divContenedorDeCard.className = "my-3 col-12 col-sm-6 col-md-4 text-break"; //Clases de bootstrap para hacer responsive el mostrado de los juegos.
 
     const divCard = document.createElement("div");
-    divCard.className = "card"; //Clase de bootstrap para dar formato a la presentacion del juego
+    divCard.className = "card bg-black tarjeta-juego"; //Clase de bootstrap para dar formato a la presentacion del juego
 
     const imgJuego = document.createElement("img");
     imgJuego.src = `/static/${juego.img}`;
@@ -103,15 +122,15 @@ function addJuego(juego){
 
     const tituloH3 = document.createElement("h3");
     tituloH3.innerText = `${juego.titulo}`;
-    tituloH3.className = "text-center fw-bold";
+    tituloH3.className = "text-center fw-bold text-white tarjeta-juego";
 
     const parrDescripcion = document.createElement("p");
     parrDescripcion.innerText = `${juego.descripcion}`;
-    parrDescripcion.className = "text-center";
+    parrDescripcion.className = "text-center text-white tarjeta-juego";
 
     const parrPrecio = document.createElement("p");
     parrPrecio.innerText = `$${juego.precio}`;
-    parrPrecio.className = "text-center fw-bold text-success fs-4"; //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
+    parrPrecio.className = "text-center fw-bold text-success fs-4 text-tarjetas"; //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
 
     const divBotones = document.createElement("div");
     divBotones.className = "d-flex justify-content-center gap-2 flex-wrap my-2";
@@ -202,6 +221,7 @@ function renderJuegos(datosJuegos){
     datosJuegos.forEach(juego => {
         divContenedorDatos.appendChild(addJuego(juego));
     });
+    cambiarTemaDeTarjetas();
 };
 
 async function initCliente(categoriaJuego) {
