@@ -81,7 +81,7 @@ function filtarJuegoCategoria(categoriaJuego){
 };
 
 function cargarDatosJuegos() {
-  return fetch("/api/products/")
+  return fetch("/api/productos/")
     .then(res => res.json())
     .then(res => res.data)
     .catch(err => {
@@ -98,7 +98,7 @@ function addJuego(juego){
     divCard.className = "card"; //Clase de bootstrap para dar formato a la presentacion del juego
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = "/static/ghost.jpg";
+    imgJuego.src = `/static/${juego.img}`;
     imgJuego.alt = `Juego de: ${juego.titulo}`;
 
     const tituloH3 = document.createElement("h3");
@@ -136,17 +136,20 @@ function addJuego(juego){
       btnEstadoProducto.textContent = juego.activo ? "Desactivar" : "Activar";
 
       try {
-        const response = await fetch(`/api/productos/${juego.id}/estado`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ estado: juego.activo ? 1 : 0 }) // 1 = activo, 0 = inactivo
-        });
+        let response;
+        if (juego.activo) {
+          response = await fetch(`/api/productos/${juego.id}/activate`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' }
+          });
+        } else {
+          response = await fetch(`/api/productos/${juego.id}`, {
+            method: 'DELETE'
+          });
+        }
 
         if (response.ok) {
           const data = await response.json();
-          console.log(data.mensaje);
         } else {
           alert('Error al cambiar el estado del producto');
         }
@@ -195,13 +198,14 @@ function addJuego(juego){
 
 function renderJuegos(datosJuegos){
     divContenedorDatos.innerHTML = "";
+    
     datosJuegos.forEach(juego => {
         divContenedorDatos.appendChild(addJuego(juego));
     });
 };
 
 async function initCliente(categoriaJuego) {
-  let datos = await cargarDatosJuegos();
+  datos = await cargarDatosJuegos();
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
 };
 

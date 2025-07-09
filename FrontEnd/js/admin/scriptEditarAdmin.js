@@ -59,8 +59,9 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
     const data = await response.json();
 
     if (response.ok) {
-      alert(data.mensaje);
+      alert("Juego guardado correctamente");
       form.reset();
+      window.location.href = "/admin";
     } else {
       alert(data.error || 'Error al guardar el producto');
     }
