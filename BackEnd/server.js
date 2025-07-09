@@ -111,6 +111,11 @@ app.get("/edicion-admin", (req, res) => {
   res.render("edicionAdmin")
 })
 
+app.get("/ventas-realizadas", (req, res) => {
+  // Ruta alternativa para editar productos
+  res.render("ventasRealizadas")
+})
+
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
 app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
     res.status(404).send(`
