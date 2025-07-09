@@ -1,8 +1,9 @@
 import { Router } from "express"
 import productsController from "../controllers/products.controller.js"
+import upload from "../middleware/upload.js"
 
-// RUTAS DE AUTENTICACIÓN
-// Define las URLs para login y autenticación
+// RUTAS DE PRODUCTOS
+// Define las URLs para productos
 const router = Router()
 
 // GET ./products - Obtener todos los productos
@@ -14,8 +15,8 @@ router.get("/active", productsController.getActive)
 // GET ./productos/:id - Obtener un producto específico
 router.get("/:id", productsController.getById)
 
-// POST ./productos - Crear un nuevo producto
-router.post("/", productsController.create)
+// POST ./productos - Crear un nuevo producto (con subida de imagen)
+router.post("/", upload.single('imagen'), productsController.create)
 
 // PUT ./productos/:id - Actualizar un producto existente
 router.put("/:id", productsController.update)

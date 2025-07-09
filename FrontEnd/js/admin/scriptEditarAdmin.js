@@ -85,24 +85,26 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const form = e.target;
+  const formData = new FormData();
 
-  const producto = {
-    titulo: form.nombreJuego.value,
-    genero: JSON.stringify(generoJuego),
-    precio: parseFloat(form.precioJuego.value),
-    descripcion: form.descripcionJuego.value,
-    categoria: form.categoriaJuego.value,
-    img: ""
-  };
+  // Agregar datos del formulario
+  formData.append('titulo', form.nombreJuego.value);
+  formData.append('genero', JSON.stringify(generoJuego));
+  formData.append('precio', parseFloat(form.precioJuego.value));
+  formData.append('descripcion', form.descripcionJuego.value);
+  formData.append('categoria', form.categoriaJuego.value);
 
+  // Manejar la imagen
   const inputImagen = document.getElementById("imagenJuego");
-
+  
   if (inputImagen.files.length > 0) {
-    producto.img = inputImagen.files[0].name;
+    // Si hay una nueva imagen, agregarla al FormData
+    formData.append('imagen', inputImagen.files[0]);
   } else if (id) {
-  const productoViejo = await fetch(`/api/productos/${id}`).then(r => r.json());
-  producto.img = productoViejo.data.img;
-}
+    // Si estamos editando y no hay nueva imagen, mantener la anterior
+    const productoViejo = await fetch(`/api/productos/${id}`).then(r => r.json());
+    formData.append('img', productoViejo.data.img);
+  }
 
   try {
     let url = '/api/productos';
@@ -115,10 +117,7 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
 
     const response = await fetch(url, {
       method: methodProducto,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(producto)
+      body: formData // Usar FormData en lugar de JSON
     });
 
     const data = await response.json();
@@ -128,7 +127,7 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
       form.reset();
       window.location.href = "/admin";
     } else {
-      alert(data.error || 'Error al guardar el producto');
+      alert(data.message || 'Error al guardar el producto');
     }
   } catch (err) {
     console.error('Error:', err);
