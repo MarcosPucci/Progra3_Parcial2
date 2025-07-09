@@ -18,8 +18,8 @@ router.get("/:id", productsController.getById)
 // POST ./productos - Crear un nuevo producto (con subida de imagen)
 router.post("/", upload.single('imagen'), productsController.create)
 
-// PUT ./productos/:id - Actualizar un producto existente
-router.put("/:id", productsController.update)
+// PUT ./productos/:id - Actualizar un producto existente (con subida de imagen)
+router.put("/:id", upload.single('imagen'), productsController.update)
 
 // DELETE ./productos/:id - Desactivar un producto
 router.delete("/:id", productsController.deactivate)

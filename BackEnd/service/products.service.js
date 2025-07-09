@@ -59,7 +59,6 @@ const productsService = {
             const nuevoJuego = await Juego.create({
                 titulo: productData.titulo,
                 genero: productData.genero,
-                anioDeSalida: productData.anioDeSalida,
                 categoria: productData.categoria,
                 precio: productData.precio,
                 descripcion: productData.descripcion,

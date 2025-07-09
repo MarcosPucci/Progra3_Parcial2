@@ -109,6 +109,12 @@ const productsController = {
     try {
       const { id } = req.params
       const productData = req.body
+      
+      // Si hay archivo subido, usar su nombre
+      if (req.file) {
+        productData.img = req.file.filename;
+      }
+      // Si no hay archivo, mantener la imagen anterior (no modificar productData.img)
 
       const updatedProduct = await productsService.update(id, productData)
 
