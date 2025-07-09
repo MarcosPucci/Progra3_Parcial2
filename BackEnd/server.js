@@ -34,10 +34,6 @@ app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-
-
-
-
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
 app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));

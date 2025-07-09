@@ -71,6 +71,14 @@ const productsController = {
   async create(req, res) {
     try {
       const productData = req.body // Datos enviados en el cuerpo de la petición
+      
+      // Si hay archivo subido, usar su nombre
+      if (req.file) {
+        productData.img = req.file.filename;
+      } else {
+        // Si no hay archivo, usar imagen por defecto
+        productData.img = 'ghost.jpg';
+      }
 
       // Validaciones básicas
       if (!productData.titulo || !productData.precio || !productData.categoria) {
