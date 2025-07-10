@@ -75,7 +75,6 @@ inputBuscar.addEventListener("keyup", (event) =>{
   const texto = event.target.value;
   const juegosFiltrados = buscarNombreJuego(texto);
   renderJuegos(juegosFiltrados);
-
 });
 
 function buscarNombreJuego(texto) {

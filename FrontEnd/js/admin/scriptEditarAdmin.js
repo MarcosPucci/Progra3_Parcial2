@@ -4,16 +4,22 @@ const headerPagina = document.getElementsByClassName("barra-menu")[0];
 const btnAgregarGenero = document.getElementById("btnAgregarCategoria");
 const listaCategorias = document.getElementById("listaCategorias");
 
+let tema = localStorage.getItem("tema") || "oscuro";
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+let generoJuego = [];
+
 window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
   const tema = localStorage.getItem("tema");
   if (tema === "claro") {
+    console.log("deberia ser claro");
     bodyPagina.classList.add("body-claro");
     headerPagina.classList.add("header-claro");
-    divCatalogo.classList.add("div-catalogo-claro");
-
-    btnesCategorias.forEach(boton => {
-      boton.classList.add("boton-claro");
-    });
+  }
+  else{
+    console.log("deberia ser oscuro");
+    bodyPagina.classList.remove("body-claro");
+    headerPagina.classList.remove("header-claro");
   }
 });
 
@@ -24,11 +30,7 @@ btnCambiarTema.addEventListener("click", (event) => {
 
   bodyPagina.classList.toggle("body-claro", !esClaro);
   headerPagina.classList.toggle("header-claro", !esClaro);
-  divCatalogo.classList.toggle("div-catalogo-claro", !esClaro);
 
-  btnesCategorias.forEach(boton => {
-    boton.classList.toggle("boton-claro", !esClaro);
-  });
   textos.forEach(texto => {
     texto.classList.toggle("bg-black", esClaro);
     texto.classList.toggle("text-white", esClaro);
@@ -37,6 +39,7 @@ btnCambiarTema.addEventListener("click", (event) => {
   });
   tema = !esClaro ? "claro" : "oscuro";
   localStorage.setItem("tema", tema);
+  console.log(tema);
 });
 
 btnAgregarGenero.addEventListener("click", (e) =>{
@@ -65,17 +68,6 @@ btnAgregarGenero.addEventListener("click", (e) =>{
   };
 });
 
-let tema = localStorage.getItem("tema") || "oscuro";
-const params = new URLSearchParams(window.location.search);
-const id = params.get('id');
-let generoJuego = [];
-
-window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
-  if (tema === "claro") {
-    bodyPagina.classList.add("body-claro");
-    headerPagina.classList.add("header-claro");
-}});
-
 if (id) {
   fetch(`/api/productos/${id}`)
     .then(res => res.json())
@@ -86,8 +78,6 @@ if (id) {
       document.getElementById('precioJuego').value = producto.precio;
       document.getElementById('descripcionJuego').value = producto.descripcion;
       document.getElementById("categoriaJuego").value = producto.categoria;
-      console.log(producto.categoria);
-      
 
       generoJuego = JSON.parse(producto.genero);
 
@@ -122,21 +112,17 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
   const form = e.target;
   const formData = new FormData();
 
-  // Agregar datos del formulario
   formData.append('titulo', form.nombreJuego.value);
   formData.append('genero', JSON.stringify(generoJuego));
   formData.append('precio', parseFloat(form.precioJuego.value));
   formData.append('descripcion', form.descripcionJuego.value);
   formData.append('categoria', form.categoriaJuego.value);
 
-  // Manejar la imagen
   const inputImagen = document.getElementById("imagenJuego");
   
   if (inputImagen.files.length > 0) {
-    // Si hay una nueva imagen, agregarla al FormData
     formData.append('imagen', inputImagen.files[0]);
   } else if (id) {
-    // Si estamos editando y no hay nueva imagen, mantener la anterior
     const productoViejo = await fetch(`/api/productos/${id}`).then(r => r.json());
     formData.append('img', productoViejo.data.img);
   }
@@ -152,7 +138,7 @@ document.getElementById('formEdit').addEventListener('submit', async (e) => {
 
     const response = await fetch(url, {
       method: methodProducto,
-      body: formData // Usar FormData en lugar de JSON
+      body: formData
     });
 
     const data = await response.json();

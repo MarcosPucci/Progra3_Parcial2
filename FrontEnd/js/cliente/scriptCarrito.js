@@ -58,8 +58,6 @@ btnFinalizarCompra.addEventListener("click", async (event) =>{
       })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        
         const ventaId = data.id; // ID de la venta guardada en la base
         window.location.href = `/ticketCliente?venta=${ventaId}`; //Mando al usuario a la pantalla del ticket con su ID
       });

@@ -16,13 +16,13 @@ let datos = [];
 btnPc.addEventListener("click", async (event) =>{
   event.preventDefault();
   categoriaActual = "PC";
-  initCliente(categoriaActual);
+  initAdmin(categoriaActual);
 });
 
 btnPlay.addEventListener("click", async (event) =>{
   event.preventDefault();
   categoriaActual = "PS4"
-  initCliente(categoriaActual);
+  initAdmin(categoriaActual);
 });
 
 btnAgregar.addEventListener("click", (event) =>{
@@ -178,33 +178,8 @@ function addJuego(juego){
       }
     });
 
-
-    const btnEliminar = document.createElement("button");
-    btnEliminar.textContent = "Eliminar";
-    btnEliminar.className = "btn btn-danger fw-bold px-3";
-
-    btnEliminar.addEventListener("click", async (event) =>{
-      event.preventDefault();
-      if (confirm("¿Seguro que querés eliminar este producto?")) {
-        try {
-          const response = await fetch(`/api/productos/${juego.id}`, {
-            method: "DELETE"
-          });
-            if (response.ok) {
-              alert("Producto eliminado.");
-            } else {
-              alert("Error al eliminar el producto.");
-            }
-        } catch (err) {
-          console.error("Error:", err);
-          alert("Error al intentar eliminar el producto.");
-        }
-      }
-    });
-
     divBotones.appendChild(btnEditar);
     divBotones.appendChild(btnEstadoProducto);
-    divBotones.appendChild(btnEliminar);
 
     divCard.appendChild(imgJuego);
     divCard.appendChild(tituloH3);
@@ -224,9 +199,9 @@ function renderJuegos(datosJuegos){
     cambiarTemaDeTarjetas();
 };
 
-async function initCliente(categoriaJuego) {
+async function initAdmin(categoriaJuego) {
   datos = await cargarDatosJuegos();
   renderJuegos(filtarJuegoCategoria(categoriaJuego));
 };
 
-initCliente(categoriaActual);
+initAdmin(categoriaActual);
