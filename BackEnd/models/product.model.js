@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize";
+import { DataTypes } from "sequelize"; // Define todos los tipos de datos
 import sequelize from "../config/db-sequelize.js";
 
 // MODELO DE PRODUCTO

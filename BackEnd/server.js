@@ -20,6 +20,7 @@ const __dirname = path.dirname(__filename)
 //Config
 app.set('PORT', envs.port || 3000)
 
+//Metodo para conectar a la base de datos
 const incializeConnection = async () => {
   try {
     await sequelize.sync()
@@ -31,8 +32,8 @@ const incializeConnection = async () => {
 
 //Middlewares
 app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json()) //Permite que el servidor entienda los datos en formato JSON
+app.use(express.urlencoded({ extended: true })) //Permite que el servidor entienda los datos de formularios
 
 // Servir archivos estáticos (HTML, CSS, JS, imágenes)
 // Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
