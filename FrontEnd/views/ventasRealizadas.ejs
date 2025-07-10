@@ -25,35 +25,21 @@
     </div>
   </header>
   <div class="container my-5">
+    <div id="div-btnes-home">
+      <button id="btn-home" onclick="window.location.href='/admin'">🎮 Home</button>
+    </div>
+
     <h2 class="text-center text-white mb-4">Ventas Realizadas</h2>
     <div id="ventas-container" class="d-flex flex-column gap-4">
       
   <!-- -------------------------------------------------------------- -->
-      <div class="card p-3">
-        <h5 class="mb-2">Venta #123</h5>
-        <p><strong>Cliente:</strong> Juan Pérez</p>
-        <p><strong>Fecha:</strong> 2025-07-08</p>
-
-        <ul class="list-group mb-2">
-          <li class="list-group-item d-flex justify-content-between">
-            <span>GTA V (x2)</span>
-            <span>$4000</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>FIFA 24 (x1)</span>
-            <span>$5000</span>
-          </li>
-        </ul>
-
-        <div class="text-end fw-bold">Total: $9000</div>
-      </div>
-
+      
+  <!-- -------------------------------------------------------------- -->
     </div>
   </div>
-  <div class="d-flex justify-content-end mt-4">
-    <button class="btn btn-danger px-4 py-2" onclick="window.location.href='/'">Volver al menú</button>
+  <div class="d-flex justify-content-end m-4">
+    <button class="btn btn-danger px-4 py-2" onclick="window.location.href='/admin'">Volver al menú</button>
   </div>
-  <!-- -------------------------------------------------------------- -->
 
   <script src="../js/admin/scriptVentasAdmin.js"></script>
 </body>

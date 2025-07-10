@@ -12,12 +12,10 @@ let generoJuego = [];
 window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
   const tema = localStorage.getItem("tema");
   if (tema === "claro") {
-    console.log("deberia ser claro");
     bodyPagina.classList.add("body-claro");
     headerPagina.classList.add("header-claro");
   }
   else{
-    console.log("deberia ser oscuro");
     bodyPagina.classList.remove("body-claro");
     headerPagina.classList.remove("header-claro");
   }
@@ -39,7 +37,6 @@ btnCambiarTema.addEventListener("click", (event) => {
   });
   tema = !esClaro ? "claro" : "oscuro";
   localStorage.setItem("tema", tema);
-  console.log(tema);
 });
 
 btnAgregarGenero.addEventListener("click", (e) =>{

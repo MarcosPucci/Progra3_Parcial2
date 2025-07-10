@@ -28,8 +28,9 @@
         <label for="password" class="texto-login">Ingrese su contraseña:</label>
         <input type="password" name="password" id="password" placeholder="***************" required>
 
-        <div id="iniciar-login">
+        <div id="iniciar-login" class="d-flex gap-2">
           <button type="submit" id="btn-login">Iniciar Sesión</button>
+          <button type="submit" class="btn btn-success p-3" onclick="window.location.href='/admin'">AutoLogin</button>
         </div>
 
         <div id="error-message" style="color: red; margin-top: 10px; text-align: center; display: none;"></div>
