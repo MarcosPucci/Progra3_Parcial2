@@ -1,5 +1,46 @@
 const divDeVentas = document.getElementById("ventas-container");
+const bodyPagina = document.getElementsByClassName("body-pagina")[0];
+const headerPagina = document.getElementsByClassName("barra-menu")[0];
+const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
+const textoVentas = document.getElementsByClassName("ventas-realizadas")[0];
 
+let tema = localStorage.getItem("tema") || "oscuro";
+
+window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+  if (tema === "claro") {
+    bodyPagina.classList.add("body-claro");
+    headerPagina.classList.add("header-claro");
+    textoVentas.classList.add("text-black");
+  }
+});
+
+btnCambiarTema.addEventListener("click", (event) => {
+  event.preventDefault();
+  const esClaro = bodyPagina.classList.contains("body-claro");
+
+  bodyPagina.classList.toggle("body-claro", !esClaro);
+  headerPagina.classList.toggle("header-claro", !esClaro);
+
+  textoVentas.classList.toggle("text-black", !esClaro);
+  
+  tema = !esClaro ? "claro" : "oscuro";
+  localStorage.setItem("tema", tema);
+  cambiarTemaVentas();
+});
+
+function cambiarTemaVentas(){
+  const tarjetas = document.querySelectorAll(".tarjeta-venta");
+  if(tema === "claro"){
+  tarjetas.forEach(card => {
+    card.classList.remove("bg-black", "text-white");
+    card.classList.add("bg-light", "text-black");
+    });
+  }else{
+    tarjetas.forEach(card => {
+      card.classList.remove("bg-light", "text-black");
+      card.classList.add("bg-black", "text-white");
+    })};
+};
 
 function cargarDatosVentas() {
   return fetch("/api/ventas")
@@ -11,9 +52,10 @@ function cargarDatosVentas() {
     });
 };
 
+
 function addVenta(venta){
   const divCard = document.createElement("div");
-  divCard.className = "card p-3 mb-4";
+  divCard.className = "card p-3 mb-4 tarjeta-venta";
 
   const tituloVenta = document.createElement("h5");
   tituloVenta.className = "mb-2";
@@ -27,21 +69,21 @@ function addVenta(venta){
   fechaTexto.innerHTML = `<strong>Fecha: </strong> ${fechaParseada}`;
 
   const divTableResponsive = document.createElement("div");
-  divTableResponsive.className = "table-responsive";
+  divTableResponsive.className = "table-responsive tarjeta-venta";
 
   // Crear tabla
   const tabla = document.createElement("table");
-  tabla.className = "table table-bordered table-hover align-middle";
+  tabla.className = "table table-bordered table-hover align-middle tarjeta-venta";
 
   // Encabezado de tabla
   const thead = document.createElement("thead");
-  thead.className = "table-light";
+  thead.className = "tarjeta-venta";
   thead.innerHTML = `
     <tr>
-      <th>Juego</th>
-      <th class="text-center">Cantidad</th>
-      <th class="text-end">Precio Unitario</th>
-      <th class="text-end">Subtotal</th>
+      <th class="tarjeta-venta">Juego</th>
+      <th class="text-center tarjeta-venta">Cantidad</th>
+      <th class="text-end tarjeta-venta">Precio Unitario</th>
+      <th class="text-end tarjeta-venta">Subtotal</th>
     </tr>`;
 
   // Cuerpo de tabla
@@ -52,21 +94,22 @@ function addVenta(venta){
     const fila = document.createElement("tr");
 
     const tdJuego = document.createElement("td");
+    tdJuego.className = "tarjeta-venta";
     tdJuego.innerText = prod.titulo;
 
     const tdCantidad = document.createElement("td");
-    tdCantidad.className = "text-center";
+    tdCantidad.className = "text-center tarjeta-venta";
     tdCantidad.innerText = prod.cantidad;
 
     const tdPrecio = document.createElement("td");
-    tdPrecio.className = "text-end";
+    tdPrecio.className = "text-end tarjeta-venta";
     tdPrecio.innerText = `$${prod.precio}`;
 
     const subtotal = prod.cantidad * prod.precio;
     total += subtotal;
 
     const tdSubtotal = document.createElement("td");
-    tdSubtotal.className = "text-end";
+    tdSubtotal.className = "text-end tarjeta-venta";
     tdSubtotal.innerText = `$${subtotal}`;
 
     fila.appendChild(tdJuego);
@@ -100,6 +143,7 @@ function renderizarVentas(datosVentas) {
   datosVentas.forEach(venta => {
     divDeVentas.appendChild(addVenta(venta));
   });
+  cambiarTemaVentas();
 };
 
 async function initVentas() {  
