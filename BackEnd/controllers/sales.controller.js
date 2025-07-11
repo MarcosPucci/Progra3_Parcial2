@@ -92,6 +92,8 @@ const salesController = {
         message: "Error al obtener ventas",
         error: error.message,
       });
+      console.log(`Error en: ${error}`);
+      
     }
   },
 };

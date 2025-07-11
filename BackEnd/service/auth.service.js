@@ -21,9 +21,6 @@ const authService = {
         throw new Error("Credenciales inválidas");
       }
 
-      // Retornar admin sin contraseña
-      const { password: _, ...adminWithoutPassword } = admin.toJSON();
-      return adminWithoutPassword;
     } catch (error) {
       throw error;
     }

@@ -30,13 +30,6 @@ const Admin = sequelize.define("Admin", {
         admin.password = await bcrypt.hash(admin.password, saltRounds);
       }
     },
-    // Encriptar contraseña antes de actualizar si cambió
-    beforeUpdate: async (admin) => {
-      if (admin.changed('password')) {
-        const saltRounds = 10;
-        admin.password = await bcrypt.hash(admin.password, saltRounds);
-      }
-    },
   },
 });
 

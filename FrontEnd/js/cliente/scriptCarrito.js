@@ -129,7 +129,7 @@ function addCarrito(juego) {
     btnBorrar.addEventListener("click", (event) => {
         event.preventDefault();
 
-        listCarrito = listCarrito.filter(j => !(j.id === juego.id && j.categoria === juego.categoria));      
+        listCarrito = listCarrito.filter(j => !(j.id === juego.id));
         localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
 
         renderCarrito(listCarrito);
@@ -147,7 +147,6 @@ function addCarrito(juego) {
             juego.cantidad = nuevaCantidad;
             localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
             renderCarrito(listCarrito);
-            mostrarCantidadEnCarrito();
         };
     });
     inputCantidad.addEventListener("keyup", () =>{
@@ -209,7 +208,6 @@ function mostrarTotalPagar(){
 };
 
 function initCarrito() {
-  mostrarCantidadEnCarrito();
   if (!ulCarrito){    
     return;
   };

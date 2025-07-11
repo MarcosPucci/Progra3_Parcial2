@@ -102,8 +102,9 @@ function renderizarVentas(datosVentas) {
   });
 };
 
-async function initVentas() {
+async function initVentas() {  
   let datosDeVentas = await cargarDatosVentas();
+  
   renderizarVentas(datosDeVentas);
 };
 

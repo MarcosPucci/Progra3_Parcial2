@@ -35,7 +35,11 @@ const Venta = sequelize.define("Venta", {
     type: DataTypes.ENUM('pendiente', 'completada', 'cancelada'),
     defaultValue: 'completada',
     allowNull: false,
-  }
+  },
+
+}, 
+{
+  timestamps: false
 });
 
 export default Venta; 

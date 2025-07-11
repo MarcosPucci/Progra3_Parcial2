@@ -21,10 +21,10 @@ const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     // Solo permite imágenes
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
+    if (file.mimetype.startsWith('image/')) { // Mimetype: Es como el dni de las imagenes (en este caso que el tipo sea: "imagen")
+      cb(null, true); // Corrobora que es una imagen, y ejecuta la logica de la subida de imagenes
     } else {
-      cb(new Error('Solo se permiten archivos de imagen'), false);
+      cb(new Error('Solo se permiten archivos de imagen'), false); // (No es una imagen) Tira error, y no maneja la logica de subida de imagenes.
     }
   },
   limits: {
