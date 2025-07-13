@@ -18,7 +18,7 @@ const __filename = url.fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 //Config
-app.set('PORT', envs.port || 3000)
+app.set('PORT', envs.portAdmin || 3001)
 
 //Metodo para conectar a la base de datos
 const incializeConnection = async () => {
@@ -35,57 +35,26 @@ app.use(cors()) //Permite peticiones desde otros dominios (asi no tira error)
 app.use(express.json()) //Permite que el servidor entienda los datos en formato JSON
 app.use(express.urlencoded({ extended: true })) //Permite que el servidor entienda los datos de formularios
 
-// Servir archivos estáticos (HTML, CSS, JS, imágenes)
-// Todo lo que esté en la carpeta 'FrontEnd' será accesible desde el navegador
-app.use(express.static(path.join(__dirname,'..', 'FrontEnd')));
+// Servir archivos estáticos del admin (privados)
+app.use('/admin/js', express.static(path.join(__dirname, 'admin', 'js')));
 
-// Configuración específica para /static/ - mapea /static/ a la carpeta FrontEnd/
-app.use('/static', express.static(path.join(__dirname, '..', 'FrontEnd')));
-
-// Servir archivos de la carpeta public del BackEnd
+// Servir archivos de la carpeta public (CSS, imágenes, etc.)
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
-// Middleware específico para servir archivos CSS, JS, imágenes y videos
-app.use('/FrontEnd/css', express.static(path.join(__dirname, '..', 'FrontEnd', 'css')));
-app.use('/FrontEnd/js', express.static(path.join(__dirname, '..', 'FrontEnd', 'js')));
-app.use('/FrontEnd/img', express.static(path.join(__dirname, '..', 'FrontEnd', 'img')));
-app.use('/FrontEnd/json', express.static(path.join(__dirname, '..', 'FrontEnd', 'json')));
+// Servir archivos CSS específicamente
+app.use('/static/css', express.static(path.join(__dirname, 'public', 'css')));
+
+// Servir archivos de imágenes específicamente
+app.use('/static/img', express.static(path.join(__dirname, 'public', 'img')));
 
 // RUTAS DE LA API (para que el frontend pueda obtener/enviar datos)
 app.use("/api/productos", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas
 app.use("/api/auth", authRoutes) // Rutas para autenticación
 
-
-// RUTAS PARA CLIENTES (página principal)
-app.get("/", (req, res) => {
-  // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "inicioCliente.html"))
-})
-
-app.get("/homeCliente", (req, res) => {
-  // Ruta directa para acceder a homeCliente.html
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "homeCliente.html"))
-})
-
-app.get("/home-cliente", (req, res) => {
-  // Ruta alternativa con guión para acceder a homeCliente.html
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "homeCliente.html"))
-})
-
-app.get("/carritoCliente", (req, res) => {
-  // Ruta directa para acceder a carrito.html
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "carrito.html"))
-})
-
-app.get("/ticketCliente", (req, res) => {
-  // Ruta para mostrar el ticket de la venta
-  res.sendFile(path.join(__dirname, "..","FrontEnd", "htmlCliente", "facturaCliente.html"))
-})
-
 // Configurar EJS como motor de vistas
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '..', 'FrontEnd', 'views'));
+app.set('views', path.join(__dirname, 'views'));
 
 // RUTAS PARA ADMIN
 app.get("/login-admin", (req, res) => {
@@ -94,7 +63,6 @@ app.get("/login-admin", (req, res) => {
 })
 
 app.get("/admin", async (req, res) => {
-
   try {
     // Importar el servicio de productos
     const productsService = (await import("./service/products.service.js")).default;
@@ -111,11 +79,6 @@ app.get("/admin", async (req, res) => {
       categoriaActual: "PS4"
     });
   }
-})
-
-app.get("/admin/editar", (req, res) => {
-  // Ruta para editar productos
-  res.render("edicionAdmin")
 })
 
 app.get("/edicion-admin", (req, res) => {
@@ -161,7 +124,7 @@ app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
         <body>
             <h1>Página no encontrada</h1>
             <p>Lo sentimos, la ruta <strong>${req.originalUrl}</strong> no existe en el servidor.</p>
-            <a href="/">Volver al inicio</a>
+            <a href="/admin">Volver al panel de administración</a>
         </body>
         </html>
     `);
@@ -171,7 +134,7 @@ app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
 incializeConnection()
 
 app.listen(app.get("PORT"), () => {
-  console.log(`Servidor corriendo en http://localhost:${app.get("PORT")}`)
-  console.log(`Interfaz Cliente: http://localhost:${app.get("PORT")}/`)
-})
-
+  console.log(`🔧 Servidor ADMIN corriendo en http://localhost:${app.get("PORT")}`)
+  console.log(`⚙️ Panel Admin: http://localhost:${app.get("PORT")}/admin`)
+  console.log(`🔐 Login Admin: http://localhost:${app.get("PORT")}/login-admin`)
+}) 

@@ -104,7 +104,7 @@ function cambiarTemaDeTarjetas() {
 };
 
 function cargarDatosJuegos() {
-  return fetch("/api/productos/")
+  return fetch("http://localhost:3001/api/productos/")
     .then(res => res.json())
     .then(res => res.data.filter(juego => juego.activo))
     .catch(err => {

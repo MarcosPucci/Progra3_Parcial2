@@ -1,11 +1,13 @@
 {
   "name": "videojuegos",
   "version": "1.0.0",
-  "main": "./BackEnd/server.js",
+  "main": "./BackEnd/serverCliente.js",
   "type": "module",
   "scripts": {
-    "start": "node ./BackEnd/server.js",
-    "dev": "nodemon ./BackEnd/server.js",
+    "start:cliente": "node ./BackEnd/serverCliente.js",
+    "start:admin": "node ./BackEnd/serverAdmin.js",
+    "dev:cliente": "nodemon ./BackEnd/serverCliente.js",
+    "dev:admin": "nodemon ./BackEnd/serverAdmin.js",
     "seed": "node ./BackEnd/seed.js",
     "create-admin": "node ./BackEnd/createAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"

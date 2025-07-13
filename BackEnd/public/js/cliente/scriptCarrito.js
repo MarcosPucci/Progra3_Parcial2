@@ -51,7 +51,7 @@ btnFinalizarCompra.addEventListener("click", async (event) =>{
 
     if (respuesta) {
       const datosCompra = {nombre: localStorage.getItem("nombreCliente"), productos: listCarrito};
-      fetch('/api/finalizarCompra', {
+      fetch('http://localhost:3001/api/finalizarCompra', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosCompra)
