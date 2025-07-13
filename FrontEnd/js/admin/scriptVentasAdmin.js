@@ -5,13 +5,15 @@ const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
 const textoVentas = document.getElementsByClassName("ventas-realizadas")[0];
 
 let tema = localStorage.getItem("tema") || "oscuro";
+let datos = window.ventasData || [];
 
-window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+window.addEventListener("DOMContentLoaded", () => {
   if (tema === "claro") {
     bodyPagina.classList.add("body-claro");
     headerPagina.classList.add("header-claro");
     textoVentas.classList.add("text-black");
   }
+  cambiarTemaVentas();
 });
 
 btnCambiarTema.addEventListener("click", (event) => {
@@ -31,28 +33,19 @@ btnCambiarTema.addEventListener("click", (event) => {
 function cambiarTemaVentas(){
   const tarjetas = document.querySelectorAll(".tarjeta-venta");
   if(tema === "claro"){
-  tarjetas.forEach(card => {
-    card.classList.remove("bg-black", "text-white");
-    card.classList.add("bg-light", "text-black");
+    tarjetas.forEach(card => {
+      card.classList.remove("bg-black", "text-white");
+      card.classList.add("bg-light", "text-black");
     });
-  }else{
+  } else {
     tarjetas.forEach(card => {
       card.classList.remove("bg-light", "text-black");
       card.classList.add("bg-black", "text-white");
-    })};
-};
-
-function cargarDatosVentas() {
-  return fetch("/api/ventas")
-    .then(res => res.json())
-    .then(res => res.data)
-    .catch(err => {
-      console.error("Error:", err);
-      return [];
     });
-};
+  }
+}
 
-
+// Función para crear una card de venta dinámicamente (para filtros futuros)
 function addVenta(venta){
   const divCard = document.createElement("div");
   divCard.className = "card p-3 mb-4 tarjeta-venta";
@@ -135,21 +128,27 @@ function addVenta(venta){
   divCard.appendChild(totalTexto);
 
   return divCard;
-};
+}
 
+// Función para renderizar ventas dinámicamente (para filtros futuros)
 function renderizarVentas(datosVentas) {
   divDeVentas.innerHTML = "";
+
+  if (datosVentas.length === 0) {
+    divDeVentas.innerHTML = `
+      <div class="text-center">
+        <p class="text-white">No hay ventas registradas.</p>
+      </div>
+    `;
+    return;
+  }
 
   datosVentas.forEach(venta => {
     divDeVentas.appendChild(addVenta(venta));
   });
   cambiarTemaVentas();
-};
+}
 
-async function initVentas() {  
-  let datosDeVentas = await cargarDatosVentas();
-  
-  renderizarVentas(datosDeVentas);
-};
-
-initVentas();
+// Inicialización - ya no necesitamos cargar datos desde el servidor
+// porque vienen renderizados por EJS
+cambiarTemaVentas();

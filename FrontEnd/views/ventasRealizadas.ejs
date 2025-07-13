@@ -31,16 +31,60 @@
 
     <h2 class="text-center mb-4 ventas-realizadas">Ventas Realizadas</h2>
     <div id="ventas-container" class="d-flex flex-column gap-4">
-      
-  <!-- -------------------------------------------------------------- -->
-      
-  <!-- -------------------------------------------------------------- -->
+      <% if (typeof ventas !== 'undefined' && ventas.length > 0) { %>
+        <% ventas.forEach(function(venta) { %>
+          <div class="card p-3 mb-4 tarjeta-venta">
+            <h5 class="mb-2">Venta N° <%= venta.id %></h5>
+            <p><strong>Cliente: </strong> <%= venta.nombre %></p>
+            <p><strong>Fecha: </strong> <%= new Date(venta.fecha).toISOString().slice(0, 10) %></p>
+            
+            <div class="table-responsive tarjeta-venta">
+              <table class="table table-bordered table-hover align-middle tarjeta-venta">
+                <thead class="tarjeta-venta">
+                  <tr>
+                    <th class="tarjeta-venta">Juego</th>
+                    <th class="text-center tarjeta-venta">Cantidad</th>
+                    <th class="text-end tarjeta-venta">Precio Unitario</th>
+                    <th class="text-end tarjeta-venta">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% 
+                    let total = 0;
+                    venta.productos.forEach(function(prod) {
+                      const subtotal = prod.cantidad * prod.precio;
+                      total += subtotal;
+                  %>
+                    <tr>
+                      <td class="tarjeta-venta"><%= prod.titulo %></td>
+                      <td class="text-center tarjeta-venta"><%= prod.cantidad %></td>
+                      <td class="text-end tarjeta-venta">$<%= prod.precio %></td>
+                      <td class="text-end tarjeta-venta">$<%= subtotal %></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-end fw-bold fs-5">
+              Total: $<%= total %>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="text-center">
+          <p class="text-white">No hay ventas registradas.</p>
+        </div>
+      <% } %>
     </div>
   </div>
   <div class="d-flex justify-content-end m-4">
     <button class="btn btn-danger px-4 py-2" onclick="window.location.href='/admin'">Volver al menú</button>
   </div>
 
+  <script>
+    //Datos globales para JavaScript (si es necesario para funcionalidades adicionales)
+    window.ventasData = <%- JSON.stringify(ventas || []) %>;
+  </script>
   <script src="../js/admin/scriptVentasAdmin.js"></script>
 </body>
 </html>

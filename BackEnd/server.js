@@ -93,9 +93,24 @@ app.get("/login-admin", (req, res) => {
   res.render("loginAdmin")
 })
 
-app.get("/admin", (req, res) => {
-  // Ruta para el panel principal del admin
-  res.render("homeAdmin")
+app.get("/admin", async (req, res) => {
+
+  try {
+    // Importar el servicio de productos
+    const productsService = (await import("./service/products.service.js")).default;
+    const products = await productsService.getAll();
+
+    res.render("homeAdmin", { 
+      products: products,
+      categoriaActual: "PS4" // Categoría por defecto
+    });
+  } catch (error) {
+    console.error("Error al cargar productos:", error);
+    res.render("homeAdmin", { 
+      products: [],
+      categoriaActual: "PS4"
+    });
+  }
 })
 
 app.get("/admin/editar", (req, res) => {
@@ -108,9 +123,22 @@ app.get("/edicion-admin", (req, res) => {
   res.render("edicionAdmin")
 })
 
-app.get("/ventas-realizadas", (req, res) => {
-  // Ruta alternativa para editar productos
-  res.render("ventasRealizadas")
+app.get("/ventas-realizadas", async (req, res) => {
+  // Ruta para mostrar ventas realizadas
+  try {
+    // Importar el servicio de ventas
+    const salesService = (await import("./service/sales.service.js")).default;
+    const ventas = await salesService.getAll();
+    
+    res.render("ventasRealizadas", { 
+      ventas: ventas
+    });
+  } catch (error) {
+    console.error("Error al cargar ventas:", error);
+    res.render("ventasRealizadas", { 
+      ventas: []
+    });
+  }
 })
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS

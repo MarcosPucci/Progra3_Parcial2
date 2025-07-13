@@ -9,26 +9,73 @@ const btnPc = document.getElementById("btn-pc");
 const btnPlay = document.getElementById("btn-play");
 const btnAgregar = document.getElementById("btn-agregar-p");
 
-let categoriaActual = "PS4";
-let tema = localStorage.getItem("tema") || "oscuro";
-let datos = [];
+// Usar las variables globales definidas en EJS o valores por defecto
+if (typeof window.categoriaActual === 'undefined') {
+  window.categoriaActual = "PS4";
+}
+if (typeof window.productosData === 'undefined') {
+  window.productosData = [];
+}
 
+let categoriaActual = window.categoriaActual;
+let tema = localStorage.getItem("tema") || "oscuro";
+let datos = window.productosData;
+
+// Event listeners para cambio de categoría
 btnPc.addEventListener("click", async (event) =>{
   event.preventDefault();
   categoriaActual = "PC";
-  initAdmin(categoriaActual);
+  filtrarYRenderizarProductos();
 });
 
 btnPlay.addEventListener("click", async (event) =>{
   event.preventDefault();
-  categoriaActual = "PS4"
-  initAdmin(categoriaActual);
+  categoriaActual = "PS4";
+  filtrarYRenderizarProductos();
 });
 
 btnAgregar.addEventListener("click", (event) =>{
   event.preventDefault();
   window.location.href = "/edicion-admin";
 });
+
+// Función para cambiar estado de producto
+window.cambiarEstadoProducto = async function(button, id, activo) {
+  try {
+    const nuevoEstado = !activo;
+    
+    let response;
+    if (nuevoEstado) {
+      response = await fetch(`/api/productos/${id}/activate`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' }
+      });
+    } else {
+      response = await fetch(`/api/productos/${id}`, {
+        method: 'DELETE'
+      });
+    }
+
+    if (response.ok) {
+      // Actualizar el botón
+      button.textContent = nuevoEstado ? "Desactivar" : "Activar";
+      button.setAttribute("data-activo", nuevoEstado);
+      
+      // Actualizar el producto en los datos locales
+      const producto = datos.find(p => p.id === id);
+      if (producto) {
+        producto.activo = nuevoEstado;
+      }
+
+      button.onclick = () => cambiarEstadoProducto(button, id, nuevoEstado);
+    } else {
+      alert('Error al cambiar el estado del producto');
+    }
+  } catch (err) {
+    console.error('Error al conectar con el servidor:', err);
+    alert('No se pudo actualizar el estado en la base de datos');
+  }
+};
 
 btnCambiarTema.addEventListener("click", (event) => {
   event.preventDefault();
@@ -52,7 +99,7 @@ btnCambiarTema.addEventListener("click", (event) => {
   localStorage.setItem("tema", tema);
 });
 
-window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
+window.addEventListener("DOMContentLoaded", () => {
   const tema = localStorage.getItem("tema");
   if (tema === "claro") {
     bodyPagina.classList.add("body-claro");
@@ -70,30 +117,17 @@ inputBuscar.addEventListener("keyup", (event) =>{
   const texto = event.target.value;
   const juegosFiltrados = buscarNombreJuego(texto);
   renderJuegos(juegosFiltrados);
-
 });
 
 function buscarNombreJuego(texto) {
   let nuevosDatos = datos.filter(j => j.categoria === categoriaActual && j.titulo.toLowerCase().includes(texto.toLowerCase()));
-
   return nuevosDatos;
-};
+}
 
 function filtarJuegoCategoria(categoriaJuego){
   let datosFiltrados = datos.filter(j => j.categoria === categoriaJuego);
-
   return datosFiltrados;
-};
-
-function cargarDatosJuegos() {
-  return fetch("/api/productos/")
-    .then(res => res.json())
-    .then(res => res.data)
-    .catch(err => {
-      console.error("Error:", err);
-      return [];
-    });
-};
+}
 
 function cambiarTemaDeTarjetas() {
   const tarjetas = document.querySelectorAll(".tarjeta-juego");
@@ -107,14 +141,14 @@ function cambiarTemaDeTarjetas() {
       card.classList.add("bg-light", "text-black");
     }
   });
-};
+}
 
 function addJuego(juego){
     const divContenedorDeCard = document.createElement("div");
-    divContenedorDeCard.className = "my-3 col-12 col-sm-6 col-md-4 text-break"; //Clases de bootstrap para hacer responsive el mostrado de los juegos.
+    divContenedorDeCard.className = "my-3 col-12 col-sm-6 col-md-4 text-break";
 
     const divCard = document.createElement("div");
-    divCard.className = "card bg-black tarjeta-juego"; //Clase de bootstrap para dar formato a la presentacion del juego
+    divCard.className = "card bg-black tarjeta-juego";
 
     const imgJuego = document.createElement("img");
     imgJuego.src = `/static/${juego.img}`;
@@ -130,7 +164,7 @@ function addJuego(juego){
 
     const parrPrecio = document.createElement("p");
     parrPrecio.innerText = `$${juego.precio}`;
-    parrPrecio.className = "text-center fw-bold text-success fs-4 text-tarjetas"; //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
+    parrPrecio.className = "text-center fw-bold text-success fs-4 text-tarjetas";
 
     const divBotones = document.createElement("div");
     divBotones.className = "d-flex justify-content-center gap-2 flex-wrap my-2";
@@ -150,32 +184,7 @@ function addJuego(juego){
 
     btnEstadoProducto.addEventListener("click", async (event) => {
       event.preventDefault();
-
-      juego.activo = !juego.activo;
-      btnEstadoProducto.textContent = juego.activo ? "Desactivar" : "Activar";
-
-      try {
-        let response;
-        if (juego.activo) {
-          response = await fetch(`/api/productos/${juego.id}/activate`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' }
-          });
-        } else {
-          response = await fetch(`/api/productos/${juego.id}`, {
-            method: 'DELETE'
-          });
-        }
-
-        if (response.ok) {
-          const data = await response.json();
-        } else {
-          alert('Error al cambiar el estado del producto');
-        }
-      } catch (err) {
-        console.error('Error al conectar con el servidor:', err);
-        alert('No se pudo actualizar el estado en la base de datos');
-      }
+      await cambiarEstadoProducto(btnEstadoProducto, juego.id, juego.activo);
     });
 
     divBotones.appendChild(btnEditar);
@@ -188,20 +197,29 @@ function addJuego(juego){
     divContenedorDeCard.appendChild(divCard);
     divCard.appendChild(divBotones);
     return divContenedorDeCard;
-};
+}
 
 function renderJuegos(datosJuegos){
     divContenedorDatos.innerHTML = "";
+    
+    if (datosJuegos.length === 0) {
+      divContenedorDatos.innerHTML = `
+        <div class="col-12 text-center">
+          <p class="text-white">No se encontraron productos que coincidan con la búsqueda.</p>
+        </div>
+      `;
+      return;
+    }
     
     datosJuegos.forEach(juego => {
         divContenedorDatos.appendChild(addJuego(juego));
     });
     cambiarTemaDeTarjetas();
-};
+}
 
-async function initAdmin(categoriaJuego) {
-  datos = await cargarDatosJuegos();
-  renderJuegos(filtarJuegoCategoria(categoriaJuego));
-};
+function filtrarYRenderizarProductos() {
+  const productosFiltrados = filtarJuegoCategoria(categoriaActual);
+  renderJuegos(productosFiltrados);
+}
 
-initAdmin(categoriaActual);
+cambiarTemaDeTarjetas();
