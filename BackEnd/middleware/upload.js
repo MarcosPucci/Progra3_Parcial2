@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 // Configuración de Multer para subida de imágenes
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'public')); // Guarda en BackEnd/public/
+    cb(null, path.join(__dirname, '..', 'public', 'img')); // Guarda en BackEnd/public/
   },
   filename: (req, file, cb) => {
     // Genera nombre único con timestamp

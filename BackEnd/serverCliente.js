@@ -8,6 +8,7 @@ import envs from "./config/envs.js";
 // Imports de las rutas
 import productRoutes from "./routes/products.route.js"
 import salesRoutes from "./routes/sales.route.js"
+import clientRoutes from "./routes/client.route.js"
 
 //Inicio de servidor
 const app = express()
@@ -47,31 +48,8 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use("/api/productos", productRoutes) // Rutas para productos
 app.use("/api", salesRoutes) // Rutas para ventas
 
-// RUTAS PARA CLIENTES (página principal)
-app.get("/", (req, res) => {
-  // Esta es la página que ven los CLIENTES en el autoservicio
-  res.sendFile(path.join(__dirname, "public", "htmlCliente", "inicioCliente.html"))
-})
-
-app.get("/homeCliente", (req, res) => {
-  // Ruta directa para acceder a homeCliente.html
-  res.sendFile(path.join(__dirname, "public", "htmlCliente", "homeCliente.html"))
-})
-
-app.get("/home-cliente", (req, res) => {
-  // Ruta alternativa con guión para acceder a homeCliente.html
-  res.sendFile(path.join(__dirname, "public", "htmlCliente", "homeCliente.html"))
-})
-
-app.get("/carritoCliente", (req, res) => {
-  // Ruta directa para acceder a carrito.html
-  res.sendFile(path.join(__dirname, "public", "htmlCliente", "carrito.html"))
-})
-
-app.get("/ticketCliente", (req, res) => {
-  // Ruta para mostrar el ticket de la venta
-  res.sendFile(path.join(__dirname, "public", "htmlCliente", "facturaCliente.html"))
-})
+// RUTAS PARA CLIENTES (modularizadas)
+app.use("/", clientRoutes)
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
 app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.

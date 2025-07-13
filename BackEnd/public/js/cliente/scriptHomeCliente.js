@@ -121,7 +121,7 @@ function addJuego(juego){
     divCard.className = "card bg-black tarjeta-juego"; //Clase de bootstrap para dar formato a la presentacion del juego
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = `/static/${juego.img}`;
+    imgJuego.src = `/static/img/${juego.img}`;
     
     imgJuego.alt = `Juego de: ${juego.titulo}`;
 

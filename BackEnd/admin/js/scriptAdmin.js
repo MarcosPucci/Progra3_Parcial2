@@ -151,7 +151,7 @@ function addJuego(juego){
     divCard.className = "card bg-black tarjeta-juego";
 
     const imgJuego = document.createElement("img");
-    imgJuego.src = `/static/${juego.img}`;
+    imgJuego.src = `/static/img/${juego.img}`;
     imgJuego.alt = `Juego de: ${juego.titulo}`;
 
     const tituloH3 = document.createElement("h3");

@@ -67,7 +67,7 @@
                 <% productosFiltrados.forEach(function(juego) { %>
                   <div class="my-3 col-12 col-sm-6 col-md-4 text-break">
                     <div class="card bg-black tarjeta-juego">
-                      <img src="/static/<%= juego.img %>" alt="Juego de: <%= juego.titulo %>">
+                      <img src="/static/img/<%= juego.img %>" alt="Juego de: <%= juego.titulo %>">
                       <h3 class="text-center fw-bold text-white tarjeta-juego"><%= juego.titulo %></h3>
                       <p class="text-center text-white tarjeta-juego"><%= juego.descripcion %></p>
                       <p class="text-center fw-bold text-success fs-4 text-tarjetas">$<%= juego.precio %></p>

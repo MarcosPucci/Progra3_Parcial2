@@ -8,7 +8,6 @@
     "start:admin": "node ./BackEnd/serverAdmin.js",
     "dev:cliente": "nodemon ./BackEnd/serverCliente.js",
     "dev:admin": "nodemon ./BackEnd/serverAdmin.js",
-    "seed": "node ./BackEnd/seed.js",
     "create-admin": "node ./BackEnd/createAdmin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

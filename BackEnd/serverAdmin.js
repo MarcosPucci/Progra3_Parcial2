@@ -9,6 +9,7 @@ import envs from "./config/envs.js";
 import productRoutes from "./routes/products.route.js"
 import salesRoutes from "./routes/sales.route.js"
 import authRoutes from "./routes/auth.route.js"
+import adminRoutes from "./routes/admin.route.js"
 
 //Inicio de servidor
 const app = express()
@@ -56,53 +57,8 @@ app.use("/api/auth", authRoutes) // Rutas para autenticación
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// RUTAS PARA ADMIN
-app.get("/login-admin", (req, res) => {
-  // Ruta para el login del admin
-  res.render("loginAdmin")
-})
-
-app.get("/admin", async (req, res) => {
-  try {
-    // Importar el servicio de productos
-    const productsService = (await import("./service/products.service.js")).default;
-    const products = await productsService.getAll();
-
-    res.render("homeAdmin", { 
-      products: products,
-      categoriaActual: "PS4" // Categoría por defecto
-    });
-  } catch (error) {
-    console.error("Error al cargar productos:", error);
-    res.render("homeAdmin", { 
-      products: [],
-      categoriaActual: "PS4"
-    });
-  }
-})
-
-app.get("/edicion-admin", (req, res) => {
-  // Ruta alternativa para editar productos
-  res.render("edicionAdmin")
-})
-
-app.get("/ventas-realizadas", async (req, res) => {
-  // Ruta para mostrar ventas realizadas
-  try {
-    // Importar el servicio de ventas
-    const salesService = (await import("./service/sales.service.js")).default;
-    const ventas = await salesService.getAll();
-    
-    res.render("ventasRealizadas", { 
-      ventas: ventas
-    });
-  } catch (error) {
-    console.error("Error al cargar ventas:", error);
-    res.render("ventasRealizadas", { 
-      ventas: []
-    });
-  }
-})
+// RUTAS PARA ADMIN (modularizadas)
+app.use("/", adminRoutes)
 
 // MIDDLEWARE PARA MANEJAR RUTAS NO ENCONTRADAS
 app.use("/*splat", (req, res) => { //*splat para cuando no se encuntra una ruta.
