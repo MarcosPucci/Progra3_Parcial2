@@ -38,9 +38,13 @@ app.use(express.urlencoded({ extended: true })) //Permite que el servidor entien
 
 // Servir archivos estáticos del admin (privados)
 app.use('/admin/js', express.static(path.join(__dirname, 'admin', 'js')));
+app.use('/admin/utils', express.static(path.join(__dirname, 'admin', 'utils')));
 
 // Servir archivos de la carpeta public (CSS, imágenes, etc.)
 app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// Servir archivos JavaScript desde public/js
+app.use('/js', express.static(path.join(__dirname, 'public', 'js')));
 
 // Servir archivos CSS específicamente
 app.use('/static/css', express.static(path.join(__dirname, 'public', 'css')));

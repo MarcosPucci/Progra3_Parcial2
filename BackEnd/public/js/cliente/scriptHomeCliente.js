@@ -1,37 +1,26 @@
-/*====================================HOME DEL CLIENTE============================================*/
+/*====================================HOME DEL CLIENTE REFACTORIZADO============================================*/
+
+import { ClienteJuegoUtils } from '../utils/clienteJuegoUtils.js';
 
 /*~~~~~~~~~~~~~ Etiquetas a usar del html ~~~~~~~~~~~~~*/
-
 const divContenedorDatos = document.getElementById("div-contenedor");
+const bodyPagina = document.querySelector("body");
+const headerPagina = document.querySelector("header");
+const divCatalogo = document.querySelector(".div-catalogo");
+const btnesCategorias = document.querySelectorAll(".btn-categorias");
 const inputBuscar = document.getElementById("input-buscar");
 const btnCarrito = document.getElementById("btn-carrito");
 const btnPc = document.getElementById("btn-pc");
 const btnPlay = document.getElementById("btn-play");
-const btnTemaClaro = document.getElementsByClassName("boton-tema-pagina")[0];
-const headerPagina = document.getElementsByClassName("barra-menu")[0];
-const bodyPagina = document.getElementsByClassName("body-pagina")[0];
-const divCatalogo = document.getElementsByClassName("div-catalogo")[0];
-const btnesCategorias = document.querySelectorAll(".btn-categorias");
+const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
 
 /*~~~~~~~~~~~~~ Variables a usar~~~~~~~~~~~~~*/
-
-let listCarrito = JSON.parse(localStorage.getItem("listCarrito")) || [];
 let tema = localStorage.getItem("tema") || "oscuro";
-let datos = [];
-let categoriaActual = "PS4";
+const juegoUtils = new ClienteJuegoUtils(btnCarrito);
 
-/*~~~~~~~~~~~~~ Funciones del home ~~~~~~~~~~~~~*/
+/*~~~~~~~~~~~~~ Event Listeners ~~~~~~~~~~~~~*/
 
-window.addEventListener("DOMContentLoaded", () => { //"DOMContentLoaded" = Cuando este todo el html cargado.
-  if (tema === "claro") {
-    bodyPagina.classList.add("body-claro");
-    headerPagina.classList.add("header-claro");
-    divCatalogo.classList.add("div-catalogo-claro");
-
-    btnesCategorias.forEach(boton => {boton.classList.add("boton-claro")})};
-});
-
-btnTemaClaro.addEventListener("click", (event) =>{
+btnCambiarTema.addEventListener("click", (event) => {
   event.preventDefault();
   const tarjetas = document.querySelectorAll(".tarjeta-juego");
   const esClaro = bodyPagina.classList.contains("body-claro");
@@ -53,41 +42,44 @@ btnTemaClaro.addEventListener("click", (event) =>{
   localStorage.setItem("tema", tema);
 });
 
-btnCarrito.addEventListener("click", (event) =>{
+window.addEventListener("DOMContentLoaded", () => {
+  const tema = localStorage.getItem("tema");
+  if (tema === "claro") {
+    bodyPagina.classList.add("body-claro");
+    headerPagina.classList.add("header-claro");
+    divCatalogo.classList.add("div-catalogo-claro");
+
+    btnesCategorias.forEach(boton => {
+      boton.classList.add("boton-claro");
+    });
+  }
+});
+
+// Navegación
+btnCarrito.addEventListener("click", (event) => {
   event.preventDefault();
   window.location.href = "/carritoCliente";
 });
 
-btnPc.addEventListener("click", async (event) =>{
+btnPc.addEventListener("click", async (event) => {
   event.preventDefault();
-  categoriaActual = "PC";
-  initCliente(categoriaActual);
+  juegoUtils.categoriaActual = "PC"; // Cambia la categoría actual en al clase
+  initCliente(); // Inicializa de 0 la pagina para cargar posibles cambios en la BD por un admin.
 });
 
-btnPlay.addEventListener("click", async (event) =>{
+btnPlay.addEventListener("click", async (event) => {
   event.preventDefault();
-  categoriaActual = "PS4"
-  initCliente(categoriaActual);
+  juegoUtils.categoriaActual = "PS4"; // Cambia la categoría actual en al clase
+  initCliente(); // Inicializa de 0 la pagina para cargar posibles cambios en la BD por un admin.
 });
 
-inputBuscar.addEventListener("keyup", (event) =>{
+// Búsqueda
+inputBuscar.addEventListener("keyup", (event) => {
   event.preventDefault();
   const texto = event.target.value;
-  const juegosFiltrados = buscarNombreJuego(texto);
-  renderJuegos(juegosFiltrados);
+  const juegosFiltrados = juegoUtils.buscarNombreJuego(texto, juegoUtils.categoriaActual);
+  juegoUtils.renderJuegos(juegosFiltrados, divContenedorDatos);
 });
-
-function buscarNombreJuego(texto) {
-  let nuevosDatos = datos.filter(j => j.categoria === categoriaActual && j.titulo.toLowerCase().includes(texto.toLowerCase()));
-
-  return nuevosDatos;
-};
-
-function filtarJuegoCategoria(categoriaJuego){
-  let datosFiltrados = datos.filter(j => j.categoria === categoriaJuego);
-
-  return datosFiltrados;
-};
 
 function cambiarTemaDeTarjetas() {
   const tarjetas = document.querySelectorAll(".tarjeta-juego");
@@ -101,86 +93,15 @@ function cambiarTemaDeTarjetas() {
       card.classList.add("bg-light", "text-black");
     }
   });
-};
+}
 
-function cargarDatosJuegos() {
-  return fetch("http://localhost:3001/api/productos/")
-    .then(res => res.json())
-    .then(res => res.data.filter(juego => juego.activo))
-    .catch(err => {
-      console.error("Error:", err);
-      return [];
-    });
-};
+// Funcion para iniciar la pagina.
+async function initCliente() {
+  await juegoUtils.cargarDatosJuegos("api/productos/active"); // Carga los datos de los juegos activos.
+  juegoUtils.renderJuegos(juegoUtils.filtrarJuegoCategoria(), divContenedorDatos); // Renderiza los juegos en la pagina.
+  juegoUtils.mostrarCantidadEnCarrito(); // Muestra la cantidad de juegos en el carrito.
+  cambiarTemaDeTarjetas()
+}
 
-function addJuego(juego){
-    const divContenedorDeCard = document.createElement("div");
-    divContenedorDeCard.className = "my-3 col-12 col-sm-6 col-md-4 text-break"; //Clases de bootstrap para hacer responsive el mostrado de los juegos.
-
-    const divCard = document.createElement("div");
-    divCard.className = "card bg-black tarjeta-juego"; //Clase de bootstrap para dar formato a la presentacion del juego
-
-    const imgJuego = document.createElement("img");
-    imgJuego.src = `/static/img/${juego.img}`;
-    
-    imgJuego.alt = `Juego de: ${juego.titulo}`;
-
-    const tituloH3 = document.createElement("h3");
-    tituloH3.innerText = `${juego.titulo}`;
-    tituloH3.className = "text-center fw-bold text-white tarjeta-juego";
-
-    const parrDescripcion = document.createElement("p");
-    parrDescripcion.innerText = `${juego.descripcion}`;
-    parrDescripcion.className = "text-center text-white tarjeta-juego";
-
-    const parrPrecio = document.createElement("p");
-    parrPrecio.innerText = `$${juego.precio}`;
-    parrPrecio.className = "text-center fw-bold text-success fs-4 text-tarjetas"; //centro texto, pongo en negrita, pinto de verde, aumenta el tamaño.
-
-    const btnFav = document.createElement("button");
-    btnFav.textContent = "Agregar al carrito";
-    btnFav.className = "btn btn-success fw-bold rounded-pill px-4 py-2";
-
-    btnFav.addEventListener("click", (event) =>{
-        event.preventDefault();
-        const juegoEnCarrito = listCarrito.find(j => j.id === juego.id && j.categoria === juego.categoria);
-        if(!juegoEnCarrito){
-          juego.cantidad = 1;
-          listCarrito.push(juego);
-        }else{
-          juegoEnCarrito.cantidad += 1;
-        };
-        localStorage.setItem("listCarrito", JSON.stringify(listCarrito));
-        mostrarCantidadEnCarrito();
-    });
-
-    divCard.appendChild(imgJuego);
-    divCard.appendChild(tituloH3);
-    divCard.appendChild(parrDescripcion);
-    divCard.appendChild(parrPrecio);
-    divCard.appendChild(btnFav);
-    divContenedorDeCard.appendChild(divCard);
-    return divContenedorDeCard;
-};
-
-function renderJuegos(datosJuegos){
-    divContenedorDatos.innerHTML = "";
-    datosJuegos.forEach(juego => {divContenedorDatos.appendChild(addJuego(juego))});
-    cambiarTemaDeTarjetas();
-};
-
-function mostrarCantidadEnCarrito(){
-  let cantidad = 0;
-
-  listCarrito.forEach(juego =>{cantidad += juego.cantidad});
-  btnCarrito.textContent = `🛒 Carrito: ${cantidad}`;
-};
-
-async function initCliente(categoriaJuego) {
-  datos = await cargarDatosJuegos();
-  
-  renderJuegos(filtarJuegoCategoria(categoriaJuego));
-  mostrarCantidadEnCarrito();
-};
-
-initCliente(categoriaActual);
+/*~~~~~~~~~~~~~ Inicialización ~~~~~~~~~~~~~*/
+initCliente(); 

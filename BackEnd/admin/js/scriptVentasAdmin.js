@@ -3,6 +3,7 @@ const bodyPagina = document.getElementsByClassName("body-pagina")[0];
 const headerPagina = document.getElementsByClassName("barra-menu")[0];
 const btnCambiarTema = document.getElementsByClassName("boton-tema-pagina")[0];
 const textoVentas = document.getElementsByClassName("ventas-realizadas")[0];
+const btnMostrarTodas = document.getElementById("btn-mostrar-todas");
 
 let tema = localStorage.getItem("tema") || "oscuro";
 let datos = window.ventasData || [];
@@ -30,6 +31,10 @@ btnCambiarTema.addEventListener("click", (event) => {
   cambiarTemaVentas();
 });
 
+btnMostrarTodas.addEventListener("click", () => {
+  renderizarVentas(datos);
+});
+
 function cambiarTemaVentas(){
   const tarjetas = document.querySelectorAll(".tarjeta-venta");
   if(tema === "claro"){
@@ -43,6 +48,17 @@ function cambiarTemaVentas(){
       card.classList.add("bg-black", "text-white");
     });
   }
+}
+
+function filtrarVentas() {
+  const fechaSeleccionada = document.getElementById('fechaFiltro').value;
+  
+  const ventasFiltradas = datos.filter(venta => {
+      const fechaVenta = new Date(venta.fecha).toISOString().split('T')[0]; //Para obtener solo la fecha
+      return fechaVenta === fechaSeleccionada;
+  });
+
+  renderizarVentas(ventasFiltradas);
 }
 
 // Función para crear una card de venta dinámicamente (para filtros futuros)
